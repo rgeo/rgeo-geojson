@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # 
-# RGeo-GeoJSON Rakefile
+# RGeo::GeoJSON Rakefile
 # 
 # -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
@@ -71,7 +71,7 @@ module RAKEFILE
   EXTRA_RDOC_FILES = ::Dir.glob('*.rdoc')
   ALL_RDOC_FILES = SOURCE_FILES + EXTRA_RDOC_FILES
   MAIN_RDOC_FILE = 'README.rdoc'
-  RDOC_TITLE = "RGeo-GeoJSON #{PRODUCT_VERSION} Documentation"
+  RDOC_TITLE = "RGeo::GeoJSON #{PRODUCT_VERSION} Documentation"
   
   TESTCASE_FILES = ::Dir.glob('test/**/tc_*.rb')
   ALL_TEST_FILES = ::Dir.glob('test/**/*.{rb,txt,shp,shx,dbf}')
@@ -85,8 +85,8 @@ module RAKEFILE
   
   GEMSPEC = ::Gem::Specification.new do |s_|
     s_.name = PRODUCT_NAME
-    s_.summary = "RGeo-GeoJSON is an RGeo module providing GeoJSON encoding and decoding."
-    s_.description = "RGeo is a geospatial data library for Ruby. RGeo-GeoJSON is an optional RGeo module providing GeoJSON encoding and decoding services. This module can be used to communicate with location-based web services that understand the GeoJSON format."
+    s_.summary = "RGeo::GeoJSON is an RGeo module providing GeoJSON encoding and decoding."
+    s_.description = "RGeo is a geospatial data library for Ruby. RGeo::GeoJSON is an optional RGeo module providing GeoJSON encoding and decoding services. This module can be used to communicate with location-based web services that understand the GeoJSON format."
     s_.version = "#{PRODUCT_VERSION}"
     s_.author = 'Daniel Azuma'
     s_.email = 'dazuma@gmail.com'

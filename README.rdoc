@@ -43,7 +43,7 @@ RGeo::GeoJSON has the following requirements:
   support parsing JSON strings. Ruby 1.9 has JSON support in its
   standard library and does not require the gem.
 
-Install RGeo-GeoJSON as a gem:
+Install RGeo::GeoJSON as a gem:
 
  gem install rgeo
  gem install rgeo-geojson
@@ -69,7 +69,7 @@ Contact the author at dazuma at gmail dot com.
 
 RGeo is written by Daniel Azuma (http://www.daniel-azuma.com).
 
-Development of RGeo::GeoJSON is sponsored by GeoPage, Inc. (http://www.geopage.com).
+Development of RGeo is sponsored by GeoPage, Inc. (http://www.geopage.com).
 
 === License
 

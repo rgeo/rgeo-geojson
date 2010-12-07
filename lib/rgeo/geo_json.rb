@@ -40,8 +40,8 @@ require 'rgeo'
 
 # RGeo is a spatial data library for Ruby, provided by the "rgeo" gem.
 # 
-# The "rgeo-geojson" component provides a set of tools for GeoJSON
-# encoding and decoding. See RGeo::GeoJSON for more information.
+# The optional RGeo::GeoJSON module provides a set of tools for GeoJSON
+# encoding and decoding.
 
 module RGeo
   
