@@ -12,7 +12,7 @@ representations of geometric objects such as points, lines, and polygons,
 along with a set of geometric analysis operations. See the README for the
 "rgeo" gem for more information.
 
-RGeo::GeoJSON is an optional module for RGeo that provides GeoJSON
+RGeo::GeoJSON is an optional RGeo add-on module that provides GeoJSON
 encoding and decoding services. GeoJSON is an emerging standard format
 used by many web services that need to communicate geospatial data. See
 http://www.geojson.com for more information.
@@ -37,29 +37,31 @@ Example:
 
 RGeo::GeoJSON has the following requirements:
 
-* RGeo 0.2.0 or later.
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
-* If you are using Ruby 1.8.7, you should install the "json" gem to
-  support parsing JSON strings. Ruby 1.9 has JSON support in its
-  standard library and does not require the gem.
+* RGeo 0.2.0 or later.
+* If you are using Ruby 1.8, you should install the "json" gem to support
+  parsing JSON strings. Ruby 1.9 has JSON support in its standard library
+  and does not require the gem.
 
 Install RGeo::GeoJSON as a gem:
 
  gem install rgeo
  gem install rgeo-geojson
 
-See the README for the required "rgeo" gem for further installation
-information.
+See the README for the "rgeo" gem, a required dependency, for further
+installation information.
 
-=== Limitations/bugs
+=== To-do list
 
-* RGeo::GeoJSON does not yet support bbox and crs elements.
+* Add support for the "bbox" and "crs" elements.
 
 === Development and support
 
 Documentation is available at http://virtuoso.rubyforge.org/rgeo-geojson/README_rdoc.html
 
 Source code is hosted on Github at http://github.com/dazuma/rgeo-geojson
+
+Contributions are welcome. Fork the project on Github.
 
 Report bugs on Github issues at http://github.org/dazuma/rgeo-geojson/issues
 
