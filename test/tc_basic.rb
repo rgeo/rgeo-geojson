@@ -54,6 +54,11 @@ module RGeo
         end
         
         
+        def test_has_version
+          assert_not_nil(::RGeo::GeoJSON::VERSION)
+        end
+        
+        
         def test_point
           object_ = @geo_factory.point(10, 20)
           json_ = {

@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # 
-# GeoJSON implementation for RGeo
+# Version of rgeo-geojson
 # 
 # -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
@@ -34,30 +34,23 @@
 ;
 
 
-# Dependencies
-require 'rgeo'
-
-
-# RGeo is a spatial data library for Ruby, provided by the "rgeo" gem.
-# 
-# The optional RGeo::GeoJSON module provides a set of tools for GeoJSON
-# encoding and decoding.
-
-module RGeo
-  
-  
-  # This is a namespace for a set of tools that provide GeoJSON encoding.
-  # See http://geojson.org/ for more information about this specification.
-  
-  module GeoJSON
-  end
-  
-  
+begin
+  require 'versionomy'
+rescue ::LoadError
 end
 
 
-# Implementation files
-require 'rgeo/geo_json/version'
-require 'rgeo/geo_json/entities'
-require 'rgeo/geo_json/coder'
-require 'rgeo/geo_json/interface'
+module RGeo
+  
+  module GeoJSON
+    
+    # Current version of RGeo::GeoJSON as a frozen string
+    VERSION_STRING = ::File.read(::File.dirname(__FILE__)+'/../../../Version').strip.freeze
+    
+    # Current version of RGeo::GeoJSON as a Versionomy object, if the
+    # Versionomy gem is available; otherwise equal to VERSION_STRING.
+    VERSION = defined?(::Versionomy) ? ::Versionomy.parse(VERSION_STRING) : VERSION_STRING
+    
+  end
+  
+end

@@ -1,3 +1,7 @@
+=== 0.2.1 / 2011-01-19
+
+* The gem version is now accessible via an api.
+
 === 0.2.0 / 2010-12-07
 
 * Initial public alpha release. Spun rgeo-geojson off from the core rgeo gem.
