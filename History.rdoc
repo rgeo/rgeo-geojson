@@ -1,6 +1,7 @@
-=== 0.2.1 / 2011-01-19
+=== 0.2.1 / 2011-04-11
 
 * The gem version is now accessible via an api.
+* A .gemspec file is now available for gem building and bundler git integration.
 
 === 0.2.0 / 2010-12-07
 

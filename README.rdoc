@@ -38,7 +38,7 @@ Example:
 RGeo::GeoJSON has the following requirements:
 
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
-* \RGeo 0.2.0 or later.
+* \RGeo 0.2.8 or later.
 * If you are using Ruby 1.8, you should install the "json" gem to support
   parsing JSON strings. Ruby 1.9 has JSON support in its standard library
   and does not require the gem.
@@ -75,7 +75,7 @@ Development of \RGeo is sponsored by GeoPage, Inc. (http://www.geopage.com).
 
 === License
 
-Copyright 2010 Daniel Azuma
+Copyright 2010-2011 Daniel Azuma
 
 All rights reserved.
 
