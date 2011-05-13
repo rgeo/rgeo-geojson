@@ -1,9 +1,10 @@
 # -----------------------------------------------------------------------------
 # 
-# GeoJSON implementation for RGeo
+# GeoJSON hooks into Rgeo
 # 
 # -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
+# Copyright 2010 Sterling Cobb
 # 
 # All rights reserved.
 # 
@@ -33,32 +34,13 @@
 # -----------------------------------------------------------------------------
 ;
 
-
-# Dependencies
-require 'rgeo'
-
-
-# RGeo is a spatial data library for Ruby, provided by the "rgeo" gem.
-# 
-# The optional RGeo::GeoJSON module provides a set of tools for GeoJSON
-# encoding and decoding.
-
 module RGeo
-  
-  
-  # This is a namespace for a set of tools that provide GeoJSON encoding.
-  # See http://geojson.org/ for more information about this specification.
-  
-  module GeoJSON
+  module Feature
+    # Encode the actual point object when working in rails
+    module Point
+      def as_json(options={})
+        ::RGeo::GeoJSON.encode(self)
+      end
+    end
   end
-  
-  
 end
-
-
-# Implementation files
-require 'rgeo/geo_json/version'
-require 'rgeo/geo_json/entities'
-require 'rgeo/geo_json/coder'
-require 'rgeo/geo_json/interface'
-require 'rgeo/geo_json/rgeo_rails_hooks'
