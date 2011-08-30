@@ -130,9 +130,6 @@ module RGeo
         else
           raise ::ArgumentError, "Unrecognzied json_parser: #{@json_parser.inspect}"
         end
-        @num_coordinates = 2
-        @num_coordinates += 1 if @geo_factory.property(:has_z_coordinate)
-        @num_coordinates += 1 if @geo_factory.property(:has_m_coordinate)
       end
       
       
@@ -224,15 +221,15 @@ module RGeo
         unless point_encoder_
           if object_.factory.property(:has_z_coordinate)
             if object_.factory.property(:has_m_coordinate)
-              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.z, p_.m] }
+              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.z, p_.m, *p_.extra] }
             else
-              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.z] }
+              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.z, *p_.extra] }
             end
           else
             if object_.factory.property(:has_m_coordinate)
-              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.m] }
+              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.m, *p_.extra] }
             else
-              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y] }
+              point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, *p_.extra] }
             end
           end
         end
@@ -324,7 +321,7 @@ module RGeo
       
       def _decode_point_coords(point_coords_)  # :nodoc:
         return nil unless point_coords_.kind_of?(::Array)
-        @geo_factory.point(*(point_coords_[0...@num_coordinates].map{ |c_| c_.to_f })) rescue nil
+        @geo_factory.point(*(point_coords_.map{ |c_| c_.to_f })) rescue nil
       end
       
       
