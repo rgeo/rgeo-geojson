@@ -70,6 +70,17 @@ module RGeo
         end
         
         
+        def test_point_with_extra
+          object_ = @geo_factory.point(10, 20, 100, 101, 102)
+          json_ = {
+            'type' => 'Point',
+            'coordinates' => [10.0, 20.0, 100, 101, 102],
+          }
+          assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
+          assert_equal([100, 101, 102], ::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory).extra)
+        end
+        
+        
         def test_point_z
           object_ = @geo_factory_z.point(10, 20, -1)
           json_ = {
@@ -78,6 +89,17 @@ module RGeo
           }
           assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
           assert(::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory_z).eql?(object_))
+        end
+        
+        
+        def test_point_z_with_extra
+          object_ = @geo_factory_z.point(10, 20, -1, 100, 101, 102)
+          json_ = {
+            'type' => 'Point',
+            'coordinates' => [10.0, 20.0, -1.0, 100, 101, 102],
+          }
+          assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
+          assert_equal([100, 101, 102], ::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory_z).extra)
         end
         
         
@@ -92,6 +114,17 @@ module RGeo
         end
         
         
+        def test_point_m_with_extra
+          object_ = @geo_factory_m.point(10, 20, -1, 100, 101, 102)
+          json_ = {
+            'type' => 'Point',
+            'coordinates' => [10.0, 20.0, -1.0, 100, 101, 102],
+          }
+          assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
+          assert_equal([100, 101, 102], ::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory_m).extra)
+        end
+        
+        
         def test_point_zm
           object_ = @geo_factory_zm.point(10, 20, -1, -2)
           json_ = {
@@ -100,6 +133,17 @@ module RGeo
           }
           assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
           assert(::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory_zm).eql?(object_))
+        end
+        
+        
+        def test_point_zm_with_extra
+          object_ = @geo_factory_zm.point(10, 20, -1, -2, 100, 101, 102)
+          json_ = {
+            'type' => 'Point',
+            'coordinates' => [10.0, 20.0, -1.0, -2.0, 100, 101, 102],
+          }
+          assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
+          assert_equal([100, 101, 102], ::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory_zm).extra)
         end
         
         
