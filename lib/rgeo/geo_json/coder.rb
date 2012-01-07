@@ -1,15 +1,15 @@
 # -----------------------------------------------------------------------------
-# 
+#
 # GeoJSON encoder object
-# 
+#
 # -----------------------------------------------------------------------------
-# Copyright 2010 Daniel Azuma
-# 
+# Copyright 2010-2012 Daniel Azuma
+#
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
 # * Redistributions in binary form must reproduce the above copyright notice,
@@ -18,7 +18,7 @@
 # * Neither the name of the copyright holder, nor the names of any other
 #   contributors to this software, may be used to endorse or promote products
 #   derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -35,28 +35,28 @@
 
 
 module RGeo
-  
+
   module GeoJSON
-    
-    
+
+
     # This object encapsulates encoding and decoding settings (principally
     # the RGeo::Feature::Factory and the RGeo::GeoJSON::EntityFactory to
     # be used) so that you can encode and decode without specifying those
     # settings every time.
-    
+
     class Coder
-      
-      
+
+
       @@json_available = nil
       @@yajl_available = nil
       @@activesupport_available = nil
-      
-      
+
+
       # Create a new coder settings object. The geo factory is passed as
       # a required argument.
-      # 
+      #
       # Options include:
-      # 
+      #
       # <tt>:geo_factory</tt>::
       #   Specifies the geo factory to use to create geometry objects.
       #   Defaults to the preferred cartesian factory.
@@ -77,7 +77,7 @@ module RGeo
       #   library in Ruby 1.9, but requires the "json" gem in Ruby 1.8.
       #   If a parser is not specified, then the decode method will not
       #   accept a String or IO object; it will require a Hash.
-      
+
       def initialize(opts_={})
         @geo_factory = opts_[:geo_factory] || ::RGeo::Cartesian.preferred_factory
         @entity_factory = opts_[:entity_factory] || EntityFactory.instance
@@ -134,18 +134,18 @@ module RGeo
         @num_coordinates += 1 if @geo_factory.property(:has_z_coordinate)
         @num_coordinates += 1 if @geo_factory.property(:has_m_coordinate)
       end
-      
-      
+
+
       # Encode the given object as GeoJSON. The object may be one of the
       # geometry objects specified in RGeo::Feature, or an appropriate
       # GeoJSON wrapper entity supported by this coder's entity factory.
-      # 
+      #
       # This method returns a JSON object (i.e. a hash). In order to
       # generate a string suitable for transmitting to a service, you
       # will need to JSON-encode it. This is usually accomplished by
       # calling <tt>to_json</tt> on the hash object, if you have the
       # appropriate JSON library installed.
-      
+
       def encode(object_)
         if @entity_factory.is_feature_collection?(object_)
           {
@@ -158,12 +158,12 @@ module RGeo
           _encode_geometry(object_)
         end
       end
-      
-      
+
+
       # Decode an object from GeoJSON. The input may be a JSON hash, a
       # String, or an IO object from which to read the JSON string.
       # If an error occurs, nil is returned.
-      
+
       def decode(input_)
         if input_.kind_of?(::IO)
           input_ = input_.read rescue nil
@@ -191,23 +191,23 @@ module RGeo
           _decode_geometry(input_)
         end
       end
-      
-      
+
+
       # Returns the RGeo::Feature::Factory used to generate geometry objects.
-      
+
       def geo_factory
         @geo_factory
       end
-      
-      
+
+
       # Returns the RGeo::GeoJSON::EntityFactory used to generate GeoJSON
       # wrapper entities.
-      
+
       def entity_factory
         @entity_factory
       end
-      
-      
+
+
       def _encode_feature(object_)  # :nodoc:
         json_ = {
           'type' => 'Feature',
@@ -218,8 +218,8 @@ module RGeo
         json_['id'] = id_ if id_
         json_
       end
-      
-      
+
+
       def _encode_geometry(object_, point_encoder_=nil)  # :nodoc:
         unless point_encoder_
           if object_.factory.property(:has_z_coordinate)
@@ -276,8 +276,8 @@ module RGeo
           nil
         end
       end
-      
-      
+
+
       def _decode_feature(input_)  # :nodoc:
         geometry_ = input_['geometry']
         if geometry_
@@ -286,8 +286,8 @@ module RGeo
         end
         @entity_factory.feature(geometry_, input_['id'], input_['properties'])
       end
-      
-      
+
+
       def _decode_geometry(input_)  # :nodoc:
         case input_['type']
         when 'GeometryCollection'
@@ -308,8 +308,8 @@ module RGeo
           nil
         end
       end
-      
-      
+
+
       def _decode_geometry_collection(input_)  # :nodoc:
         geometries_ = input_['geometries']
         geometries_ = [] unless geometries_.kind_of?(::Array)
@@ -320,14 +320,14 @@ module RGeo
         end
         @geo_factory.collection(decoded_geometries_)
       end
-      
-      
+
+
       def _decode_point_coords(point_coords_)  # :nodoc:
         return nil unless point_coords_.kind_of?(::Array)
         @geo_factory.point(*(point_coords_[0...@num_coordinates].map{ |c_| c_.to_f })) rescue nil
       end
-      
-      
+
+
       def _decode_line_string_coords(line_coords_)  # :nodoc:
         return nil unless line_coords_.kind_of?(::Array)
         points_ = []
@@ -337,8 +337,8 @@ module RGeo
         end
         @geo_factory.line_string(points_)
       end
-      
-      
+
+
       def _decode_polygon_coords(poly_coords_)  # :nodoc:
         return nil unless poly_coords_.kind_of?(::Array)
         rings_ = []
@@ -358,8 +358,8 @@ module RGeo
           @geo_factory.polygon(rings_[0], rings_[1..-1])
         end
       end
-      
-      
+
+
       def _decode_multi_point_coords(multi_point_coords_)  # :nodoc:
         return nil unless multi_point_coords_.kind_of?(::Array)
         points_ = []
@@ -369,8 +369,8 @@ module RGeo
         end
         @geo_factory.multi_point(points_)
       end
-      
-      
+
+
       def _decode_multi_line_string_coords(multi_line_coords_)  # :nodoc:
         return nil unless multi_line_coords_.kind_of?(::Array)
         lines_ = []
@@ -380,8 +380,8 @@ module RGeo
         end
         @geo_factory.multi_line_string(lines_)
       end
-      
-      
+
+
       def _decode_multi_polygon_coords(multi_polygon_coords_)  # :nodoc:
         return nil unless multi_polygon_coords_.kind_of?(::Array)
         polygons_ = []
@@ -391,11 +391,11 @@ module RGeo
         end
         @geo_factory.multi_polygon(polygons_)
       end
-      
-      
+
+
     end
-    
-    
+
+
   end
-  
+
 end

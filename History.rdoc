@@ -1,3 +1,8 @@
+=== 0.2.2 / 2012-01-09
+
+* Fixed Feature#property(:symbol). (Reported by Andy Allan.)
+* Added an "rgeo-geojson.rb" wrapper so bundler's auto-require will work without modification. (Reported by Mauricio Pasquier Juan.)
+
 === 0.2.1 / 2011-04-11
 
 * The gem version is now accessible via an api.
