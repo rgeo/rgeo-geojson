@@ -48,6 +48,10 @@ Install RGeo::GeoJSON as a gem:
  gem install rgeo
  gem install rgeo-geojson
 
+Or with bundle:
+
+ gem 'rgeo-geojson', :require => 'rgeo/geo_json'
+
 See the README for the "rgeo" gem, a required dependency, for further
 installation information.
 
