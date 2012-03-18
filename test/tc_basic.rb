@@ -59,6 +59,12 @@ module RGeo
         end
 
 
+        def test_nil
+          assert_nil(::RGeo::GeoJSON.encode(nil))
+          assert_nil(::RGeo::GeoJSON.decode(nil, :geo_factory => @geo_factory))
+        end
+
+
         def test_point
           object_ = @geo_factory.point(10, 20)
           json_ = {
