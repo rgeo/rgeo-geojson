@@ -65,6 +65,8 @@ Contributions are welcome. Fork the project on Github.
 
 Report bugs on Github issues at http://github.org/dazuma/rgeo-geojson/issues
 
+Build status: {<img src="https://secure.travis-ci.org/dazuma/rgeo-geojson.png" />}[http://travis-ci.org/dazuma/rgeo-geojson]
+
 Contact the author at dazuma at gmail dot com.
 
 === Acknowledgments

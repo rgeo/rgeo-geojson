@@ -215,6 +215,7 @@ task :test => [:build_ext, :build_other] do
   else
     test_files_ = ::Dir.glob("test/**/tc_*.rb")
   end
+  $VERBOSE = true
   test_files_.each do |path_|
     load path_
     puts "Loaded testcase #{path_}"
@@ -224,4 +225,4 @@ end
 
 # Default task
 
-task :default => [:clean, :build_rdoc, :build_gem, :test]
+task :default => [:clean, :test]

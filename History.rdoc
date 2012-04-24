@@ -1,3 +1,7 @@
+=== 0.2.4 / 2012-04-??
+
+* Travis CI integration.
+
 === 0.2.3 / 2012-03-17
 
 * Returns nil from the encode method if nil is passed in. (Suggestion by Pete Deffendol.)
