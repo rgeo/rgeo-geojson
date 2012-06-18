@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>RGeo::GeoJSON 0.2.4 Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body>
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./History_rdoc.html">History</a>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./RGeo.html">RGeo</a>
+  
+    <li><a href="./RGeo/GeoJSON.html">RGeo::GeoJSON</a>
+  
+    <li><a href="./RGeo/GeoJSON/Coder.html">RGeo::GeoJSON::Coder</a>
+  
+    <li><a href="./RGeo/GeoJSON/EntityFactory.html">RGeo::GeoJSON::EntityFactory</a>
+  
+    <li><a href="./RGeo/GeoJSON/Feature.html">RGeo::GeoJSON::Feature</a>
+  
+    <li><a href="./RGeo/GeoJSON/FeatureCollection.html">RGeo::GeoJSON::FeatureCollection</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<h2 id="label-RGeo%3A%3AGeoJSON"><a href="RGeo/GeoJSON.html">RGeo::GeoJSON</a></h2>
+
+<p><a href="RGeo/GeoJSON.html">RGeo::GeoJSON</a> is an optional module for <a
+href="http://github.com/dazuma/rgeo">RGeo</a> that provides GeoJSON
+encoding and decoding services.</p>
+
+<h3 id="label-Summary">Summary</h3>
+
+<p>RGeo is a key component for writing location-aware applications in the Ruby
+programming language. At its core is an implementation of the industry
+standard OGC Simple Features Specification, which provides data
+representations of geometric objects such as points, lines, and polygons,
+along with a set of geometric analysis operations. See the <a
+href="README_rdoc.html">README</a> for the “rgeo” gem for more information.</p>
+
+<p><a href="RGeo/GeoJSON.html">RGeo::GeoJSON</a> is an optional RGeo add-on
+module that provides GeoJSON encoding and decoding services. GeoJSON is an
+emerging standard format used by many web services that need to communicate
+geospatial data. See <a href="http://www.geojson.com">www.geojson.com</a>
+for more information.</p>
+
+<p>Example:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'rgeo/geo_json'</span>
+
+<span class="ruby-identifier">str1</span> = <span class="ruby-string">'{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[1,2]}'</span>
+<span class="ruby-identifier">geom</span> = <span class="ruby-constant">RGeo</span><span class="ruby-operator">::</span><span class="ruby-constant">GeoJSON</span>.<span class="ruby-identifier">decode</span>(<span class="ruby-identifier">str1</span>, :<span class="ruby-identifier">json_parser</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">json</span>)
+<span class="ruby-identifier">geom</span>.<span class="ruby-identifier">as_text</span>              <span class="ruby-comment"># =&gt; &quot;POINT(1.0 2.0)&quot;</span>
+
+<span class="ruby-identifier">str2</span> = <span class="ruby-string">'{&quot;type&quot;:&quot;Feature&quot;,&quot;geometry&quot;:{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[2.5,4.0]},&quot;properties&quot;:{&quot;color&quot;:&quot;red&quot;}}'</span>
+<span class="ruby-identifier">feature</span> = <span class="ruby-constant">RGeo</span><span class="ruby-operator">::</span><span class="ruby-constant">GeoJSON</span>.<span class="ruby-identifier">decode</span>(<span class="ruby-identifier">str2</span>, :<span class="ruby-identifier">json_parser</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">json</span>)
+<span class="ruby-identifier">feature</span>[<span class="ruby-string">'color'</span>]          <span class="ruby-comment"># =&gt; 'red'</span>
+<span class="ruby-identifier">feature</span>.<span class="ruby-identifier">geometry</span>.<span class="ruby-identifier">as_text</span>  <span class="ruby-comment"># =&gt; &quot;POINT(2.5 4.0)&quot;</span>
+
+<span class="ruby-identifier">hash</span> = <span class="ruby-constant">RGeo</span><span class="ruby-operator">::</span><span class="ruby-constant">GeoJSON</span>.<span class="ruby-identifier">encode</span>(<span class="ruby-identifier">feature</span>)
+<span class="ruby-identifier">hash</span>.<span class="ruby-identifier">to_json</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">str2</span>      <span class="ruby-comment"># =&gt; true</span>
+</pre>
+
+<h3 id="label-Installation">Installation</h3>
+
+<p><a href="RGeo/GeoJSON.html">RGeo::GeoJSON</a> has the following
+requirements:</p>
+<ul><li>
+<p>Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.</p>
+</li><li>
+<p>rgeo 0.3.13 or later.</p>
+</li><li>
+<p>If you are using Ruby 1.8, you should install the “json” gem to support
+parsing JSON strings. Ruby 1.9 has JSON support in its standard library and
+does not require the gem.</p>
+</li></ul>
+
+<p>Install <a href="RGeo/GeoJSON.html">RGeo::GeoJSON</a> as a gem:</p>
+
+<pre>gem install rgeo
+gem install rgeo-geojson</pre>
+
+<p>See the <a href="README_rdoc.html">README</a> for the “rgeo” gem, a
+required dependency, for further installation information.</p>
+
+<h3 id="label-To-do+list">To-do list</h3>
+<ul><li>
+<p>Add support for the “bbox” and “crs” elements.</p>
+</li></ul>
+
+<h3 id="label-Development+and+support">Development and support</h3>
+
+<p>Documentation is available at <a
+href="http://dazuma.github.com/rgeo-geojson/rdoc">dazuma.github.com/rgeo-geojson/rdoc</a></p>
+
+<p>Source code is hosted on Github at <a
+href="http://github.com/dazuma/rgeo-geojson">github.com/dazuma/rgeo-geojson</a></p>
+
+<p>Contributions are welcome. Fork the project on Github.</p>
+
+<p>Build status: <a href="http://travis-ci.org/dazuma/rgeo-geojson"><img
+src="https://secure.travis-ci.org/dazuma/rgeo-geojson.png" /></a></p>
+
+<p>Report bugs on Github issues at <a
+href="http://github.org/dazuma/rgeo-geojson/issues">github.org/dazuma/rgeo-geojson/issues</a></p>
+
+<p>Contact the author at dazuma at gmail dot com.</p>
+
+<h3 id="label-Acknowledgments">Acknowledgments</h3>
+
+<p>RGeo is written by Daniel Azuma (<a
+href="http://www.daniel-azuma.com">www.daniel-azuma.com</a>).</p>
+
+<p>Development is supported by Pirq. (<a
+href="http://www.pirq.com">www.pirq.com</a>).</p>
+
+<h3 id="label-License">License</h3>
+
+<p>Copyright 2010-2012 Daniel Azuma</p>
+
+<p>All rights reserved.</p>
+
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:</p>
+<ul><li>
+<p>Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.</p>
+</li><li>
+<p>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</p>
+</li><li>
+<p>Neither the name of the copyright holder, nor the names of any other
+contributors to this software, may be used to endorse or promote products
+derived from this software without specific prior written permission.</p>
+</li></ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.</p>
+
+</div>
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

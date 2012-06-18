@@ -1,0 +1,9 @@
+Mon, 18 Jun 2012 00:12:11 -0700
+lib/rgeo/geo_json/coder.rb	Sat, 17 Mar 2012 15:18:10 -0700
+lib/rgeo/geo_json/entities.rb	Sat, 07 Jan 2012 12:27:42 -0800
+lib/rgeo/geo_json/interface.rb	Sat, 17 Mar 2012 15:14:37 -0700
+lib/rgeo/geo_json/version.rb	Sat, 07 Jan 2012 12:27:42 -0800
+lib/rgeo/geo_json.rb	Sat, 07 Jan 2012 12:27:42 -0800
+lib/rgeo-geojson.rb	Sat, 07 Jan 2012 11:46:21 -0800
+History.rdoc	Tue, 24 Apr 2012 11:15:45 -0700
+README.rdoc	Mon, 18 Jun 2012 00:10:16 -0700
