@@ -40,7 +40,7 @@
   s_.version = "#{::File.read('Version').strip}.build#{::Time.now.utc.strftime('%Y%m%d%H%M%S')}"
   s_.author = 'Daniel Azuma'
   s_.email = 'dazuma@gmail.com'
-  s_.homepage = "http://virtuoso.rubyforge.org/rgeo-geojson"
+  s_.homepage = "http://dazuma.github.com/rgeo-geojson"
   s_.rubyforge_project = 'virtuoso'
   s_.required_ruby_version = '>= 1.8.7'
   s_.files = ::Dir.glob("lib/**/*.rb") +
@@ -50,5 +50,5 @@
   s_.extra_rdoc_files = ::Dir.glob("*.rdoc")
   s_.test_files = ::Dir.glob("test/**/tc_*.rb")
   s_.platform = ::Gem::Platform::RUBY
-  s_.add_dependency('rgeo', '>= 0.3.11')
+  s_.add_dependency('rgeo', '>= 0.3.13')
 end

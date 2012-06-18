@@ -38,7 +38,7 @@ Example:
 RGeo::GeoJSON has the following requirements:
 
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
-* rgeo 0.3.7 or later.
+* rgeo 0.3.13 or later.
 * If you are using Ruby 1.8, you should install the "json" gem to support
   parsing JSON strings. Ruby 1.9 has JSON support in its standard library
   and does not require the gem.
@@ -57,15 +57,15 @@ installation information.
 
 === Development and support
 
-Documentation is available at http://virtuoso.rubyforge.org/rgeo-geojson/README_rdoc.html
+Documentation is available at http://dazuma.github.com/rgeo-geojson/rdoc
 
 Source code is hosted on Github at http://github.com/dazuma/rgeo-geojson
 
 Contributions are welcome. Fork the project on Github.
 
-Report bugs on Github issues at http://github.org/dazuma/rgeo-geojson/issues
-
 Build status: {<img src="https://secure.travis-ci.org/dazuma/rgeo-geojson.png" />}[http://travis-ci.org/dazuma/rgeo-geojson]
+
+Report bugs on Github issues at http://github.org/dazuma/rgeo-geojson/issues
 
 Contact the author at dazuma at gmail dot com.
 
