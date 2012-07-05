@@ -1,6 +1,7 @@
 /doc/
 /pkg/
 /tmp/
+.rbx
 .#*
 .DS_Store
 *.dSYM
@@ -11,4 +12,4 @@
 *.rbc
 Makefile*
 mkmf.log
-Gemfile.lock
+/Gemfile.lock

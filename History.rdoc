@@ -1,3 +1,7 @@
+=== 0.2.5 / 2012-??-??
+
+* The gemspec no longer includes the timestamp in the version, so that bundler can pull from github. (Reported by corneverbruggen)
+
 === 0.2.4 / 2012-04-??
 
 * Travis CI integration.
