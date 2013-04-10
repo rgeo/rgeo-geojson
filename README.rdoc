@@ -15,7 +15,7 @@ along with a set of geometric analysis operations. See the README for the
 RGeo::GeoJSON is an optional \RGeo add-on module that provides GeoJSON
 encoding and decoding services. GeoJSON is an emerging standard format
 used by many web services that need to communicate geospatial data. See
-http://www.geojson.com for more information.
+http://www.geojson.org for more information.
 
 Example:
 
