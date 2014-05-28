@@ -34,7 +34,8 @@
 ;
 
 
-require 'test/unit'
+require 'minitest/autorun'
+require 'minitest/pride'
 require 'rgeo/geo_json'
 
 
@@ -42,7 +43,7 @@ module RGeo
   module GeoJSON
     module Tests  # :nodoc:
 
-      class TestGeoJSON < ::Test::Unit::TestCase  # :nodoc:
+      class TestGeoJSON < ::Minitest::Test  # :nodoc:
 
 
         def setup
@@ -55,7 +56,7 @@ module RGeo
 
 
         def test_has_version
-          assert_not_nil(::RGeo::GeoJSON::VERSION)
+          refute_nil(::RGeo::GeoJSON::VERSION)
         end
 
 
@@ -226,7 +227,7 @@ module RGeo
             'properties' => nil,
           }
           obj_ = ::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory)
-          assert_not_nil(obj_)
+          refute_nil(obj_)
           assert_nil(obj_.geometry)
           assert_equal({}, obj_.properties)
         end
