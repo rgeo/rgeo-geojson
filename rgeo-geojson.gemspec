@@ -9,10 +9,14 @@
 
   spec.required_ruby_version = '>= 1.8.7'
   spec.files = Dir["lib/**/*.rb", "test/**/*.rb", "*.rdoc", 'Version', 'LICENSE.txt']
-  spec.extra_rdoc_files = ::Dir.glob("*.rdoc")
-  spec.test_files = ::Dir.glob("test/**/tc_*.rb")
+  spec.extra_rdoc_files = Dir["*.rdoc"]
+  spec.test_files = Dir["test/**/tc_*.rb"]
 
   spec.platform = ::Gem::Platform::RUBY
 
   spec.add_dependency 'rgeo', '~> 0.3'
+
+  spec.add_development_dependency 'bundler', '~> 1.6'
+  spec.add_development_dependency 'minitest', '~> 5.3'
+  spec.add_development_dependency 'rake', '~> 10.3'
 end

@@ -1,12 +1,11 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'rgeo/geo_json'
-
 
 module RGeo
   module GeoJSON
     module Tests  # :nodoc:
 
-      class TestGeoJSON < ::Test::Unit::TestCase  # :nodoc:
+      class TestGeoJSON < Minitest::Test  # :nodoc:
 
 
         def setup
