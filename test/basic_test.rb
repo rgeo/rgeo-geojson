@@ -5,7 +5,7 @@ module RGeo
   module GeoJSON
     module Tests  # :nodoc:
 
-      class TestGeoJSON < Minitest::Test  # :nodoc:
+      class BasicTest < Minitest::Test  # :nodoc:
 
 
         def setup
