@@ -18,7 +18,7 @@ module RGeo
 
 
         def test_has_version
-          assert_not_nil(::RGeo::GeoJSON::VERSION)
+          refute_nil(::RGeo::GeoJSON::VERSION)
         end
 
 
@@ -189,7 +189,7 @@ module RGeo
             'properties' => nil,
           }
           obj_ = ::RGeo::GeoJSON.decode(json_, :geo_factory => @geo_factory)
-          assert_not_nil(obj_)
+          refute_nil(obj_)
           assert_nil(obj_.geometry)
           assert_equal({}, obj_.properties)
         end
