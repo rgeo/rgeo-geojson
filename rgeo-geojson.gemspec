@@ -9,7 +9,7 @@ require './lib/rgeo/geo_json/version'
   spec.email = 'dazuma@gmail.com, parhameter@gmail.com'
   spec.homepage = "http://github.com/rgeo/rgeo-geojson"
 
-  spec.required_ruby_version = '>= 1.8.7'
+  spec.required_ruby_version = '>= 1.9.3'
   spec.files = Dir["lib/**/*.rb", "test/**/*.rb", "*.rdoc", 'LICENSE.txt']
   spec.extra_rdoc_files = Dir["*.rdoc"]
   spec.test_files = Dir["test/**/*_test.rb"]
