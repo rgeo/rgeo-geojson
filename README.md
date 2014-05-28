@@ -79,7 +79,7 @@ Report bugs on Github issues at http://github.com/rgeo/rgeo-geojson/issues
 
 RGeo is written by Daniel Azuma (http://www.daniel-azuma.com).
 
-Development is supported by: 
+Development is supported by:
 
 * [Pirq](http://www.pirq.com)
 * [Neighborland](https://neighborland.com)
@@ -87,6 +87,7 @@ Development is supported by:
 ### License
 
 Copyright 2014 Daniel Azuma
+
 Copyright 2014 Tee Parham
 
 https://github.com/rgeo/rgeo-geojson/blob/master/LICENSE.txt
