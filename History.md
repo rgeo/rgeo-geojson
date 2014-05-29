@@ -1,3 +1,9 @@
+### 0.3.1 / 2014-05-29
+
+* Include docs files in gemspec
+* Gemspec cleanup
+
+
 ### 0.3.0 / 2014-05-27
 
 * Require ruby 1.9.3+
