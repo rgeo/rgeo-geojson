@@ -208,32 +208,32 @@ module RGeo
         when ::RGeo::Feature::Point
           {
             'type' => 'Point',
-            'coordinates' => point_encoder_.call(object_),
+            'coordinates' => object_.coordinates
           }
         when ::RGeo::Feature::LineString
           {
             'type' => 'LineString',
-            'coordinates' => object_.points.map(&point_encoder_),
+            'coordinates' => object_.coordinates
           }
         when ::RGeo::Feature::Polygon
           {
             'type' => 'Polygon',
-            'coordinates' => [object_.exterior_ring.points.map(&point_encoder_)] + object_.interior_rings.map{ |r_| r_.points.map(&point_encoder_) }
+            'coordinates' => object_.coordinates
           }
         when ::RGeo::Feature::MultiPoint
           {
             'type' => 'MultiPoint',
-            'coordinates' => object_.map(&point_encoder_),
+            'coordinates' => object_.coordinates
           }
         when ::RGeo::Feature::MultiLineString
           {
             'type' => 'MultiLineString',
-            'coordinates' => object_.map{ |ls_| ls_.points.map(&point_encoder_) },
+            'coordinates' => object_.coordinates
           }
         when ::RGeo::Feature::MultiPolygon
           {
             'type' => 'MultiPolygon',
-            'coordinates' => object_.map{ |poly_| [poly_.exterior_ring.points.map(&point_encoder_)] + poly_.interior_rings.map{ |r_| r_.points.map(&point_encoder_) } },
+            'coordinates' => object_.coordinates
           }
         when ::RGeo::Feature::GeometryCollection
           {
