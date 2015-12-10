@@ -1,3 +1,9 @@
+### 0.3.2 / 2015-12-10
+
+* Faster coordinates methods (tneems) #18
+* Requires rgeo 0.5.0+
+
+
 ### 0.3.1 / 2014-05-29
 
 * Include docs files in gemspec
