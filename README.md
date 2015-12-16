@@ -43,7 +43,7 @@ hash.to_json == str2      # => true
 `RGeo::GeoJSON` has the following requirements:
 
 * Ruby 1.9.3 or later
-* rgeo 0.3.13 or later.
+* rgeo 0.5.0 or later.
 
 Include in your bundle:
 
@@ -59,17 +59,11 @@ gem install rgeo-geojson
 
 See the README for the "rgeo" gem, a required dependency, for further installation information.
 
-If you are using Ruby 1.8, use version `0.2.x`.
-
-### To-do list
-
-* Add support for the "bbox" and "crs" elements.
-
 ### Development and support
 
 RDoc Documentation is available at http://rdoc.info/gems/rgeo-geojson
 
-Source code is hosted on Github at http://github.com/rgeo/rgeo-geojson
+Source code is hosted on Github at https://github.com/rgeo/rgeo-geojson
 
 Contributions are welcome. Fork the project on Github.
 
@@ -77,7 +71,7 @@ Report bugs on Github issues at http://github.com/rgeo/rgeo-geojson/issues
 
 ### Acknowledgments
 
-RGeo is written by Daniel Azuma (http://www.daniel-azuma.com).
+RGeo was created by Daniel Azuma (http://www.daniel-azuma.com).
 
 Development is supported by:
 
@@ -86,8 +80,6 @@ Development is supported by:
 
 ### License
 
-Copyright 2014 Daniel Azuma
-
-Copyright 2014 Tee Parham
+Copyright (c) Daniel Azuma, Tee Parham
 
 https://github.com/rgeo/rgeo-geojson/blob/master/LICENSE.txt
