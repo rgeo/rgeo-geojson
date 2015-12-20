@@ -72,46 +72,6 @@ Style/EmptyElse:
   Exclude:
     - 'lib/rgeo/geo_json/coder.rb'
 
-# Offense count: 80
-# Cop supports --auto-correct.
-Style/EmptyLines:
-  Exclude:
-    - 'lib/rgeo/geo_json.rb'
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'lib/rgeo/geo_json/entities.rb'
-    - 'lib/rgeo/geo_json/interface.rb'
-    - 'test/basic_test.rb'
-
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/EmptyLinesAroundClassBody:
-  Exclude:
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'lib/rgeo/geo_json/entities.rb'
-    - 'lib/rgeo/geo_json/interface.rb'
-    - 'test/basic_test.rb'
-
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/EmptyLinesAroundModuleBody:
-  Exclude:
-    - 'lib/rgeo/geo_json.rb'
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'lib/rgeo/geo_json/entities.rb'
-    - 'lib/rgeo/geo_json/interface.rb'
-    - 'test/basic_test.rb'
-
-# Offense count: 13
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment.
-Style/ExtraSpacing:
-  Exclude:
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'lib/rgeo/geo_json/entities.rb'
-    - 'test/basic_test.rb'
-
 # Offense count: 1
 # Configuration parameters: Exclude.
 Style/FileName:
@@ -153,30 +113,6 @@ Style/RedundantSelf:
 Style/RescueModifier:
   Exclude:
     - 'lib/rgeo/geo_json/coder.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/SpaceAfterComma:
-  Exclude:
-    - 'test/basic_test.rb'
-
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-Style/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
-
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-Style/SpaceBeforeBlockBraces:
-  EnforcedStyle: no_space
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
-Style/SpaceInsideHashLiteralBraces:
-  Enabled: false
 
 # Offense count: 202
 # Cop supports --auto-correct.
