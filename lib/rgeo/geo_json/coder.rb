@@ -44,7 +44,7 @@ module RGeo
         when :json
           if @@json_available.nil?
             begin
-              require 'json'
+              require "json"
               @@json_available = true
             rescue ::LoadError
               @@json_available = false
@@ -58,7 +58,7 @@ module RGeo
         when :yajl
           if @@yajl_available.nil?
             begin
-              require 'yajl'
+              require "yajl"
               @@yajl_available = true
             rescue ::LoadError
               @@yajl_available = false
@@ -72,7 +72,7 @@ module RGeo
         when :active_support
           if @@activesupport_available.nil?
             begin
-              require 'active_support/json'
+              require "active_support/json"
               @@activesupport_available = true
             rescue ::LoadError
               @@activesupport_available = false
@@ -108,8 +108,8 @@ module RGeo
       def encode(object_)
         if @entity_factory.is_feature_collection?(object_)
           {
-            'type' => 'FeatureCollection',
-            'features' => @entity_factory.map_feature_collection(object_) { |f_| _encode_feature(f_) },
+            "type" => "FeatureCollection",
+            "features" => @entity_factory.map_feature_collection(object_) { |f_| _encode_feature(f_) },
           }
         elsif @entity_factory.is_feature?(object_)
           _encode_feature(object_)
@@ -134,18 +134,18 @@ module RGeo
         unless input_.kind_of?(::Hash)
           return nil
         end
-        case input_['type']
-        when 'FeatureCollection'
-          features_ = input_['features']
+        case input_["type"]
+        when "FeatureCollection"
+          features_ = input_["features"]
           features_ = [] unless features_.kind_of?(::Array)
           decoded_features_ = []
           features_.each do |f_|
-            if f_['type'] == 'Feature'
+            if f_["type"] == "Feature"
               decoded_features_ << _decode_feature(f_)
             end
           end
           @entity_factory.feature_collection(decoded_features_)
-        when 'Feature'
+        when "Feature"
           _decode_feature(input_)
         else
           _decode_geometry(input_)
@@ -163,12 +163,12 @@ module RGeo
 
       def _encode_feature(object_) # :nodoc:
         json_ = {
-          'type' => 'Feature',
-          'geometry' => _encode_geometry(@entity_factory.get_feature_geometry(object_)),
-          'properties' => @entity_factory.get_feature_properties(object_).dup,
+          "type" => "Feature",
+          "geometry" => _encode_geometry(@entity_factory.get_feature_geometry(object_)),
+          "properties" => @entity_factory.get_feature_properties(object_).dup,
         }
         id_ = @entity_factory.get_feature_id(object_)
-        json_['id'] = id_ if id_
+        json_["id"] = id_ if id_
         json_
       end
 
@@ -191,38 +191,38 @@ module RGeo
         case object_
         when ::RGeo::Feature::Point
           {
-            'type' => 'Point',
-            'coordinates' => object_.coordinates
+            "type" => "Point",
+            "coordinates" => object_.coordinates
           }
         when ::RGeo::Feature::LineString
           {
-            'type' => 'LineString',
-            'coordinates' => object_.coordinates
+            "type" => "LineString",
+            "coordinates" => object_.coordinates
           }
         when ::RGeo::Feature::Polygon
           {
-            'type' => 'Polygon',
-            'coordinates' => object_.coordinates
+            "type" => "Polygon",
+            "coordinates" => object_.coordinates
           }
         when ::RGeo::Feature::MultiPoint
           {
-            'type' => 'MultiPoint',
-            'coordinates' => object_.coordinates
+            "type" => "MultiPoint",
+            "coordinates" => object_.coordinates
           }
         when ::RGeo::Feature::MultiLineString
           {
-            'type' => 'MultiLineString',
-            'coordinates' => object_.coordinates
+            "type" => "MultiLineString",
+            "coordinates" => object_.coordinates
           }
         when ::RGeo::Feature::MultiPolygon
           {
-            'type' => 'MultiPolygon',
-            'coordinates' => object_.coordinates
+            "type" => "MultiPolygon",
+            "coordinates" => object_.coordinates
           }
         when ::RGeo::Feature::GeometryCollection
           {
-            'type' => 'GeometryCollection',
-            'geometries' => object_.map { |geom_| _encode_geometry(geom_, point_encoder_) },
+            "type" => "GeometryCollection",
+            "geometries" => object_.map { |geom_| _encode_geometry(geom_, point_encoder_) },
           }
         else
           nil
@@ -230,37 +230,37 @@ module RGeo
       end
 
       def _decode_feature(input_) # :nodoc:
-        geometry_ = input_['geometry']
+        geometry_ = input_["geometry"]
         if geometry_
           geometry_ = _decode_geometry(geometry_)
           return nil unless geometry_
         end
-        @entity_factory.feature(geometry_, input_['id'], input_['properties'])
+        @entity_factory.feature(geometry_, input_["id"], input_["properties"])
       end
 
       def _decode_geometry(input_) # :nodoc:
-        case input_['type']
-        when 'GeometryCollection'
+        case input_["type"]
+        when "GeometryCollection"
           _decode_geometry_collection(input_)
-        when 'Point'
-          _decode_point_coords(input_['coordinates'])
-        when 'LineString'
-          _decode_line_string_coords(input_['coordinates'])
-        when 'Polygon'
-          _decode_polygon_coords(input_['coordinates'])
-        when 'MultiPoint'
-          _decode_multi_point_coords(input_['coordinates'])
-        when 'MultiLineString'
-          _decode_multi_line_string_coords(input_['coordinates'])
-        when 'MultiPolygon'
-          _decode_multi_polygon_coords(input_['coordinates'])
+        when "Point"
+          _decode_point_coords(input_["coordinates"])
+        when "LineString"
+          _decode_line_string_coords(input_["coordinates"])
+        when "Polygon"
+          _decode_polygon_coords(input_["coordinates"])
+        when "MultiPoint"
+          _decode_multi_point_coords(input_["coordinates"])
+        when "MultiLineString"
+          _decode_multi_line_string_coords(input_["coordinates"])
+        when "MultiPolygon"
+          _decode_multi_polygon_coords(input_["coordinates"])
         else
           nil
         end
       end
 
       def _decode_geometry_collection(input_)  # :nodoc:
-        geometries_ = input_['geometries']
+        geometries_ = input_["geometries"]
         geometries_ = [] unless geometries_.kind_of?(::Array)
         decoded_geometries_ = []
         geometries_.each do |g_|

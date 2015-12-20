@@ -94,9 +94,3 @@ Style/PredicateName:
 Style/RescueModifier:
   Exclude:
     - 'lib/rgeo/geo_json/coder.rb'
-
-# Offense count: 202
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/StringLiterals:
-  Enabled: false
