@@ -113,11 +113,3 @@ Style/RescueModifier:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/StringLiterals:
   Enabled: false
-
-# Offense count: 33
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-Style/TrailingComma:
-  Exclude:
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'test/basic_test.rb'
