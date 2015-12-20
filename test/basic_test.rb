@@ -3,20 +3,20 @@ require "rgeo/geo_json"
 
 class BasicTest < Minitest::Test # :nodoc:
   def setup
-    @geo_factory = ::RGeo::Cartesian.simple_factory(srid: 4326)
-    @geo_factory_z = ::RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true)
-    @geo_factory_m = ::RGeo::Cartesian.simple_factory(srid: 4326, has_m_coordinate: true)
-    @geo_factory_zm = ::RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true, has_m_coordinate: true)
-    @entity_factory = ::RGeo::GeoJSON::EntityFactory.instance
+    @geo_factory = RGeo::Cartesian.simple_factory(srid: 4326)
+    @geo_factory_z = RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true)
+    @geo_factory_m = RGeo::Cartesian.simple_factory(srid: 4326, has_m_coordinate: true)
+    @geo_factory_zm = RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true, has_m_coordinate: true)
+    @entity_factory = RGeo::GeoJSON::EntityFactory.instance
   end
 
   def test_has_version
-    refute_nil(::RGeo::GeoJSON::VERSION)
+    refute_nil(RGeo::GeoJSON::VERSION)
   end
 
   def test_nil
-    assert_nil(::RGeo::GeoJSON.encode(nil))
-    assert_nil(::RGeo::GeoJSON.decode(nil, geo_factory: @geo_factory))
+    assert_nil(RGeo::GeoJSON.encode(nil))
+    assert_nil(RGeo::GeoJSON.decode(nil, geo_factory: @geo_factory))
   end
 
   def test_point
@@ -25,8 +25,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Point",
       "coordinates" => [10.0, 20.0],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_point_z
@@ -35,8 +35,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Point",
       "coordinates" => [10.0, 20.0, -1.0],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory_z).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory_z).eql?(object_))
   end
 
   def test_point_m
@@ -45,8 +45,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Point",
       "coordinates" => [10.0, 20.0, -1.0],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory_m).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory_m).eql?(object_))
   end
 
   def test_point_zm
@@ -55,8 +55,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Point",
       "coordinates" => [10.0, 20.0, -1.0, -2.0],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory_zm).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory_zm).eql?(object_))
   end
 
   def test_line_string
@@ -65,8 +65,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "LineString",
       "coordinates" => [[10.0, 20.0], [12.0, 22.0], [-3.0, 24.0]],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_polygon
@@ -75,8 +75,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Polygon",
       "coordinates" => [[[10.0, 20.0], [12.0, 22.0], [-3.0, 24.0], [10.0, 20.0]]],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_polygon_complex
@@ -85,8 +85,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Polygon",
       "coordinates" => [[[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]], [[4.0, 4.0], [6.0, 5.0], [4.0, 6.0], [4.0, 4.0]]],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_multi_point
@@ -95,8 +95,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "MultiPoint",
       "coordinates" => [[10.0, 20.0], [12.0, 22.0], [-3.0, 24.0]],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_multi_line_string
@@ -105,8 +105,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "MultiLineString",
       "coordinates" => [[[10.0, 20.0], [12.0, 22.0], [-3.0, 24.0]], [[1.0, 2.0], [3.0, 4.0]]],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_multi_polygon
@@ -115,8 +115,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "MultiPolygon",
       "coordinates" => [[[[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]], [[4.0, 4.0], [6.0, 5.0], [4.0, 6.0], [4.0, 4.0]]], [[[-10.0, -10.0], [-15.0, -10.0], [-10.0, -15.0], [-10.0, -10.0]]]]
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_geometry_collection
@@ -143,8 +143,8 @@ class BasicTest < Minitest::Test # :nodoc:
         },
       ],
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_feature
@@ -157,8 +157,8 @@ class BasicTest < Minitest::Test # :nodoc:
       },
       "properties" => {},
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_feature_nulls
@@ -167,7 +167,7 @@ class BasicTest < Minitest::Test # :nodoc:
       "geometry" => nil,
       "properties" => nil,
     }
-    obj_ = ::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory)
+    obj_ = RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory)
     refute_nil(obj_)
     assert_nil(obj_.geometry)
     assert_equal({}, obj_.properties)
@@ -184,8 +184,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "id" => 2,
       "properties" => { "prop1" => "foo", "prop2" => "bar" },
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_feature_with_symbol_prop_keys
@@ -201,8 +201,8 @@ class BasicTest < Minitest::Test # :nodoc:
     }
     assert_equal("foo", object_.property("prop1"))
     assert_equal("bar", object_.property(:prop2))
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 
   def test_feature_collection
@@ -237,7 +237,7 @@ class BasicTest < Minitest::Test # :nodoc:
         },
       ]
     }
-    assert_equal(json_, ::RGeo::GeoJSON.encode(object_))
-    assert(::RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
+    assert_equal(json_, RGeo::GeoJSON.encode(object_))
+    assert(RGeo::GeoJSON.decode(json_, geo_factory: @geo_factory).eql?(object_))
   end
 end
