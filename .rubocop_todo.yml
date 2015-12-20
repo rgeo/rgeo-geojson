@@ -33,13 +33,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 19
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'test/basic_test.rb'
-
 # Offense count: 19
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -77,12 +70,6 @@ Style/EmptyElse:
 Style/FileName:
   Exclude:
     - 'lib/rgeo-geojson.rb'
-
-# Offense count: 25
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, UseHashRocketsWithSymbolValues.
-Style/HashSyntax:
-  Enabled: false
 
 # Offense count: 3
 # Cop supports --auto-correct.
