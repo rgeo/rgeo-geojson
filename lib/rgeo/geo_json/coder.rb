@@ -154,16 +154,12 @@ module RGeo
 
       # Returns the RGeo::Feature::Factory used to generate geometry objects.
 
-      def geo_factory
-        @geo_factory
-      end
+      attr_reader :geo_factory
 
       # Returns the RGeo::GeoJSON::EntityFactory used to generate GeoJSON
       # wrapper entities.
 
-      def entity_factory
-        @entity_factory
-      end
+      attr_reader :entity_factory
 
       def _encode_feature(object_) # :nodoc:
         json_ = {
@@ -276,7 +272,7 @@ module RGeo
 
       def _decode_point_coords(point_coords_)  # :nodoc:
         return nil unless point_coords_.kind_of?(::Array)
-        @geo_factory.point(*(point_coords_[0...@num_coordinates].map { |c_| c_.to_f })) rescue nil
+        @geo_factory.point(*(point_coords_[0...@num_coordinates].map(&:to_f))) rescue nil
       end
 
       def _decode_line_string_coords(line_coords_) # :nodoc:

@@ -102,12 +102,6 @@ Style/PredicateName:
   Exclude:
     - 'lib/rgeo/geo_json/entities.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'lib/rgeo/geo_json/entities.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/RescueModifier:
@@ -120,13 +114,6 @@ Style/RescueModifier:
 Style/StringLiterals:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-Style/SymbolProc:
-  Exclude:
-    - 'lib/rgeo/geo_json/coder.rb'
-
 # Offense count: 33
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
@@ -134,11 +121,3 @@ Style/TrailingComma:
   Exclude:
     - 'lib/rgeo/geo_json/coder.rb'
     - 'test/basic_test.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, IgnoreClassMethods, Whitelist.
-Style/TrivialAccessors:
-  Exclude:
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'lib/rgeo/geo_json/entities.rb'

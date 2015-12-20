@@ -55,9 +55,7 @@ module RGeo
 
       # Returns the geometry contained in this feature, which may be nil.
 
-      def geometry
-        @geometry
-      end
+      attr_reader :geometry
 
       # Returns the ID for this feature, which may be nil.
 
@@ -219,7 +217,7 @@ module RGeo
       # Return the singleton instance of EntityFactory.
 
       def self.instance
-        @instance ||= self.new
+        @instance ||= new
       end
     end
   end
