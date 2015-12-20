@@ -1,10 +1,6 @@
 module RGeo
-
   module GeoJSON
-
     class << self
-
-
       # High-level convenience routine for encoding an object as GeoJSON.
       # Pass the object, which may one of the geometry objects specified
       # in RGeo::Feature, or an appropriate GeoJSON wrapper entity such
@@ -16,10 +12,9 @@ module RGeo
       # encode supports objects of type RGeo::GeoJSON::Feature and
       # RGeo::GeoJSON::FeatureCollection.
 
-      def encode(object_, opts_={})
+      def encode(object_, opts_ = {})
         Coder.new(opts_).encode(object_)
       end
-
 
       # High-level convenience routine for decoding an object from GeoJSON.
       # The input may be a JSON hash, a String, or an IO object from which
@@ -48,10 +43,9 @@ module RGeo
       #   If a parser is not specified, then the decode method will not
       #   accept a String or IO object; it will require a Hash.
 
-      def decode(input_, opts_={})
+      def decode(input_, opts_ = {})
         Coder.new(opts_).decode(input_)
       end
-
 
       # Creates and returns a coder object of type RGeo::GeoJSON::Coder
       # that encapsulates encoding and decoding settings (principally the
@@ -81,13 +75,9 @@ module RGeo
       #   If a parser is not specified, then the decode method will not
       #   accept a String or IO object; it will require a Hash.
 
-      def coder(opts_={})
+      def coder(opts_ = {})
         Coder.new(opts_)
       end
-
-
     end
-
   end
-
 end
