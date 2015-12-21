@@ -1,10 +1,10 @@
-# RGeo::GeoJSON
+# rgeo-geojson
 
 [![Gem Version](https://badge.fury.io/rb/rgeo-geojson.svg)](http://badge.fury.io/rb/rgeo-geojson)
 [![Build Status](https://travis-ci.org/rgeo/rgeo-geojson.svg?branch=master)](https://travis-ci.org/rgeo/rgeo-geojson)
 
-`RGeo::GeoJSON` is an optional module for [RGeo](http://github.com/rgeo/rgeo)
-that provides GeoJSON encoding and decoding services.
+`rgeo-geojson` is an extension to [RGeo](https://github.com/rgeo/rgeo)
+that provides GeoJSON encoding and decoding.
 
 ## Summary
 
@@ -15,10 +15,9 @@ representations of geometric objects such as points, lines, and polygons,
 along with a set of geometric analysis operations. See the README for the
 "rgeo" gem for more information.
 
-`RGeo::GeoJSON` is an optional RGeo add-on module that provides GeoJSON encoding
-and decoding services. GeoJSON is an emerging standard format used by many web
-services that need to communicate geospatial data. See http://www.geojson.org
-for more information.
+`RGeo::GeoJSON` is an optional RGeo module that provides GeoJSON encoding
+and decoding. [GeoJSON](http://geojson.org) is a JSON format used for
+geographic data structures.
 
 Example:
 
@@ -26,11 +25,11 @@ Example:
 require 'rgeo/geo_json'
 
 str1 = '{"type":"Point","coordinates":[1,2]}'
-geom = RGeo::GeoJSON.decode(str1, :json_parser => :json)
+geom = RGeo::GeoJSON.decode(str1, json_parser: :json)
 geom.as_text              # => "POINT(1.0 2.0)"
 
 str2 = '{"type":"Feature","geometry":{"type":"Point","coordinates":[2.5,4.0]},"properties":{"color":"red"}}'
-feature = RGeo::GeoJSON.decode(str2, :json_parser => :json)
+feature = RGeo::GeoJSON.decode(str2, json_parser: :json)
 feature['color']          # => 'red'
 feature.geometry.as_text  # => "POINT(2.5 4.0)"
 
@@ -51,7 +50,7 @@ Include in your bundle:
 gem 'rgeo-geojson'
 ```
 
-Install RGeo::GeoJSON as a gem:
+Install `rgeo-geojson` as a gem:
 
 ```sh
 gem install rgeo-geojson
@@ -73,10 +72,8 @@ Report bugs on Github issues at http://github.com/rgeo/rgeo-geojson/issues
 
 RGeo was created by Daniel Azuma (http://www.daniel-azuma.com).
 
-Development is supported by:
-
-* [Pirq](http://www.pirq.com)
-* [Neighborland](https://neighborland.com)
+Development is supported by [Pirq](http://www.pirq.com) and
+[Neighborland](https://neighborland.com).
 
 ### License
 
