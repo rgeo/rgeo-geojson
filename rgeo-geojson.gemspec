@@ -2,11 +2,15 @@ require "./lib/rgeo/geo_json/version"
 
 Gem::Specification.new do |spec|
   spec.name = "rgeo-geojson"
-  spec.summary = "An RGeo module providing GeoJSON encoding and decoding."
-  spec.description = "RGeo is a geospatial data library for Ruby. RGeo::GeoJSON is an optional RGeo module providing GeoJSON encoding and decoding services. This module can be used to communicate with location-based web services that understand the GeoJSON format."
+  spec.summary = "Convert RGeo data to and from GeoJSON."
+  spec.description =
+    "Convert RGeo data to and from GeoJSON. "\
+    "rgeo-geojson is an extension to the rgeo gem that converts "\
+    "RGeo data types to and from GeoJSON."
+
   spec.authors = ["Daniel Azuma", "Tee Parham"]
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
-  spec.homepage = "http://github.com/rgeo/rgeo-geojson"
+  spec.homepage = "https://github.com/rgeo/rgeo-geojson"
   spec.license = "BSD"
   spec.platform = Gem::Platform::RUBY
 
