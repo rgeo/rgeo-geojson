@@ -1,3 +1,8 @@
+### 0.3.3 / 2015-12-23
+
+* Rubocop style updates #20
+* Do not distribute test files with gem
+
 ### 0.3.2 / 2015-12-10
 
 * Faster coordinates methods (tneems) #18
