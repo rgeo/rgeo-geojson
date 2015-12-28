@@ -1,5 +1,5 @@
 require "minitest/autorun"
-require "rgeo/geo_json"
+require "rgeo-geojson"
 
 class BasicTest < Minitest::Test # :nodoc:
   def setup
