@@ -18,8 +18,8 @@ module RGeo
         @geometry = geometry
         @id = id
         @properties = {}
-        properties.each do |k_, v_|
-          @properties[k_.to_s] = v_
+        properties.each do |k, v|
+          @properties[k.to_s] = v
         end
       end
 
@@ -95,7 +95,7 @@ module RGeo
     # between the GeoJSON engine and feature collections.
 
     class FeatureCollection
-      include ::Enumerable
+      include Enumerable
 
       # Create a new FeatureCollection with the given features, which must
       # be provided as an Enumerable.

@@ -33,7 +33,7 @@ module RGeo
       #   accept a String or IO object; it will require a Hash.
 
       def initialize(opts = {})
-        @geo_factory = opts[:geo_factory] || ::RGeo::Cartesian.preferred_factory
+        @geo_factory = opts[:geo_factory] || RGeo::Cartesian.preferred_factory
         @entity_factory = opts[:entity_factory] || EntityFactory.instance
         @json_parser = opts[:json_parser]
         case @json_parser
@@ -88,19 +88,19 @@ module RGeo
       # If an error occurs, nil is returned.
 
       def decode(input)
-        if input.is_a?(::IO)
+        if input.is_a?(IO)
           input = input.read rescue nil
         end
-        if input.is_a?(::String)
+        if input.is_a?(String)
           input = @json_parser.call(input) rescue nil
         end
-        unless input.is_a?(::Hash)
+        unless input.is_a?(Hash)
           return nil
         end
         case input["type"]
         when "FeatureCollection"
           features = input["features"]
-          features = [] unless features.is_a?(::Array)
+          features = [] unless features.is_a?(Array)
           decoded_features = []
           features.each do |f|
             if f["type"] == "Feature"
@@ -152,37 +152,37 @@ module RGeo
           end
         end
         case object
-        when ::RGeo::Feature::Point
+        when RGeo::Feature::Point
           {
             "type" => "Point",
             "coordinates" => object.coordinates
           }
-        when ::RGeo::Feature::LineString
+        when RGeo::Feature::LineString
           {
             "type" => "LineString",
             "coordinates" => object.coordinates
           }
-        when ::RGeo::Feature::Polygon
+        when RGeo::Feature::Polygon
           {
             "type" => "Polygon",
             "coordinates" => object.coordinates
           }
-        when ::RGeo::Feature::MultiPoint
+        when RGeo::Feature::MultiPoint
           {
             "type" => "MultiPoint",
             "coordinates" => object.coordinates
           }
-        when ::RGeo::Feature::MultiLineString
+        when RGeo::Feature::MultiLineString
           {
             "type" => "MultiLineString",
             "coordinates" => object.coordinates
           }
-        when ::RGeo::Feature::MultiPolygon
+        when RGeo::Feature::MultiPolygon
           {
             "type" => "MultiPolygon",
             "coordinates" => object.coordinates
           }
-        when ::RGeo::Feature::GeometryCollection
+        when RGeo::Feature::GeometryCollection
           {
             "type" => "GeometryCollection",
             "geometries" => object.map { |geom| _encode_geometry(geom, point_encoder) },
@@ -224,7 +224,7 @@ module RGeo
 
       def _decode_geometry_collection(input)  # :nodoc:
         geometries_ = input["geometries"]
-        geometries_ = [] unless geometries_.is_a?(::Array)
+        geometries_ = [] unless geometries_.is_a?(Array)
         decoded_geometries_ = []
         geometries_.each do |g_|
           g_ = _decode_geometry(g_)
@@ -234,12 +234,12 @@ module RGeo
       end
 
       def _decode_point_coords(point_coords)  # :nodoc:
-        return nil unless point_coords.is_a?(::Array)
+        return nil unless point_coords.is_a?(Array)
         @geo_factory.point(*(point_coords[0...@num_coordinates].map(&:to_f))) rescue nil
       end
 
       def _decode_line_string_coords(line_coords) # :nodoc:
-        return nil unless line_coords.is_a?(::Array)
+        return nil unless line_coords.is_a?(Array)
         points = []
         line_coords.each do |point_coords|
           point = _decode_point_coords(point_coords)
@@ -249,10 +249,10 @@ module RGeo
       end
 
       def _decode_polygon_coords(poly_coords) # :nodoc:
-        return nil unless poly_coords.is_a?(::Array)
+        return nil unless poly_coords.is_a?(Array)
         rings = []
         poly_coords.each do |ring_coords|
-          return nil unless ring_coords.is_a?(::Array)
+          return nil unless ring_coords.is_a?(Array)
           points = []
           ring_coords.each do |point_coords|
             point = _decode_point_coords(point_coords)
@@ -269,7 +269,7 @@ module RGeo
       end
 
       def _decode_multi_point_coords(multi_point_coords) # :nodoc:
-        return nil unless multi_point_coords.is_a?(::Array)
+        return nil unless multi_point_coords.is_a?(Array)
         points = []
         multi_point_coords.each do |point_coords|
           point = _decode_point_coords(point_coords)
@@ -279,7 +279,7 @@ module RGeo
       end
 
       def _decode_multi_line_string_coords(multi_line_coords) # :nodoc:
-        return nil unless multi_line_coords.is_a?(::Array)
+        return nil unless multi_line_coords.is_a?(Array)
         lines = []
         multi_line_coords.each do |line_coords|
           line = _decode_line_string_coords(line_coords)
@@ -289,7 +289,7 @@ module RGeo
       end
 
       def _decode_multi_polygon_coords(multi_polygon_coords) # :nodoc:
-        return nil unless multi_polygon_coords.is_a?(::Array)
+        return nil unless multi_polygon_coords.is_a?(Array)
         polygons = []
         multi_polygon_coords.each do |poly_coords|
           poly = _decode_polygon_coords(poly_coords)
