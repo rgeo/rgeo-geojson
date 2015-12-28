@@ -6,7 +6,6 @@ module RGeo
     # settings every time.
 
     class Coder
-      @@yajl_available = nil
       @@activesupport_available = nil
 
       # Create a new coder settings object. The geo factory is passed as
@@ -44,19 +43,8 @@ module RGeo
           require "json" unless defined?(JSON)
           @json_parser = Proc.new { |str_| JSON.parse(str_) }
         when :yajl
-          if @@yajl_available.nil?
-            begin
-              require "yajl"
-              @@yajl_available = true
-            rescue ::LoadError
-              @@yajl_available = false
-            end
-          end
-          if @@yajl_available
-            @json_parser = ::Proc.new { |str_| ::Yajl::Parser.new.parse(str_) }
-          else
-            raise Error::RGeoError, "Yajl library is not available. You may need to install the 'yajl' gem."
-          end
+          require "yajl" unless defined?(Yajl)
+          @json_parser = Proc.new { |str_| Yajl::Parser.new.parse(str_) }
         when :active_support
           if @@activesupport_available.nil?
             begin
