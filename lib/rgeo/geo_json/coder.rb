@@ -39,13 +39,13 @@ module RGeo
         case @json_parser
         when :json
           require "json" unless defined?(JSON)
-          @json_parser = Proc.new { |str_| JSON.parse(str_) }
+          @json_parser = proc { |str_| JSON.parse(str_) }
         when :yajl
           require "yajl" unless defined?(Yajl)
-          @json_parser = Proc.new { |str_| Yajl::Parser.new.parse(str_) }
+          @json_parser = proc { |str_| Yajl::Parser.new.parse(str_) }
         when :active_support
           require "active_support/json" unless defined?(ActiveSupport::JSON)
-          @json_parser = Proc.new { |str_| ActiveSupport::JSON.decode(str_) }
+          @json_parser = proc { |str_| ActiveSupport::JSON.decode(str_) }
         when Proc, nil
           # Leave as is
         else
@@ -139,15 +139,15 @@ module RGeo
         unless point_encoder_
           if object_.factory.property(:has_z_coordinate)
             if object_.factory.property(:has_m_coordinate)
-              point_encoder_ = ::Proc.new { |p_| [p_.x, p_.y, p_.z, p_.m] }
+              point_encoder_ = proc { |p_| [p_.x, p_.y, p_.z, p_.m] }
             else
-              point_encoder_ = ::Proc.new { |p_| [p_.x, p_.y, p_.z] }
+              point_encoder_ = proc { |p_| [p_.x, p_.y, p_.z] }
             end
           else
             if object_.factory.property(:has_m_coordinate)
-              point_encoder_ = ::Proc.new { |p_| [p_.x, p_.y, p_.m] }
+              point_encoder_ = proc { |p_| [p_.x, p_.y, p_.m] }
             else
-              point_encoder_ = ::Proc.new { |p_| [p_.x, p_.y] }
+              point_encoder_ = proc { |p_| [p_.x, p_.y] }
             end
           end
         end
