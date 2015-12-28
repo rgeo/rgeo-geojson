@@ -33,14 +33,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 19
 
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/ClassCheck:
-  Exclude:
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'lib/rgeo/geo_json/entities.rb'
-
 # Offense count: 9
 Style/ClassVars:
   Exclude:

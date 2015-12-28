@@ -41,7 +41,7 @@ module RGeo
       # may behave differently than the == operator.
 
       def eql?(rhs_)
-        rhs_.kind_of?(Feature) && @geometry.eql?(rhs_.geometry) && @id.eql?(rhs_.feature_id) && @properties.eql?(rhs_.instance_variable_get(:@properties))
+        rhs_.is_a?(Feature) && @geometry.eql?(rhs_.geometry) && @id.eql?(rhs_.feature_id) && @properties.eql?(rhs_.instance_variable_get(:@properties))
       end
 
       # Two features are equal if their geometries, IDs, and properties
@@ -50,7 +50,7 @@ module RGeo
       # may behave differently than the eql? method.
 
       def ==(rhs_)
-        rhs_.kind_of?(Feature) && @geometry == rhs_.geometry && @id == rhs_.feature_id && @properties == rhs_.instance_variable_get(:@properties)
+        rhs_.is_a?(Feature) && @geometry == rhs_.geometry && @id == rhs_.feature_id && @properties == rhs_.instance_variable_get(:@properties)
       end
 
       # Returns the geometry contained in this feature, which may be nil.
@@ -102,7 +102,7 @@ module RGeo
 
       def initialize(features_ = [])
         @features = []
-        features_.each { |f_| @features << f_ if f_.kind_of?(Feature) }
+        features_.each { |f_| @features << f_ if f_.is_a?(Feature) }
       end
 
       def inspect # :nodoc:
@@ -123,7 +123,7 @@ module RGeo
       # may behave differently than the == operator.
 
       def eql?(rhs_)
-        rhs_.kind_of?(FeatureCollection) && @features.eql?(rhs_.instance_variable_get(:@features))
+        rhs_.is_a?(FeatureCollection) && @features.eql?(rhs_.instance_variable_get(:@features))
       end
 
       # Two feature collections are equal if they contain the same
@@ -132,7 +132,7 @@ module RGeo
       # may behave differently than the eql? method.
 
       def ==(rhs_)
-        rhs_.kind_of?(FeatureCollection) && @features == rhs_.instance_variable_get(:@features)
+        rhs_.is_a?(FeatureCollection) && @features == rhs_.instance_variable_get(:@features)
       end
 
       # Iterates or returns an iterator for the features.
@@ -178,14 +178,14 @@ module RGeo
       # entity factory.
 
       def is_feature?(object_)
-        object_.kind_of?(Feature)
+        object_.is_a?(Feature)
       end
 
       # Returns true if the given object is a feature collection created
       # by this entity factory.
 
       def is_feature_collection?(object_)
-        object_.kind_of?(FeatureCollection)
+        object_.is_a?(FeatureCollection)
       end
 
       # Run Enumerable#map on the features contained in the given feature

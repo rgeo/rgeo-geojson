@@ -125,19 +125,19 @@ module RGeo
       # If an error occurs, nil is returned.
 
       def decode(input_)
-        if input_.kind_of?(::IO)
+        if input_.is_a?(::IO)
           input_ = input_.read rescue nil
         end
-        if input_.kind_of?(::String)
+        if input_.is_a?(::String)
           input_ = @json_parser.call(input_) rescue nil
         end
-        unless input_.kind_of?(::Hash)
+        unless input_.is_a?(::Hash)
           return nil
         end
         case input_["type"]
         when "FeatureCollection"
           features_ = input_["features"]
-          features_ = [] unless features_.kind_of?(::Array)
+          features_ = [] unless features_.is_a?(::Array)
           decoded_features_ = []
           features_.each do |f_|
             if f_["type"] == "Feature"
@@ -261,7 +261,7 @@ module RGeo
 
       def _decode_geometry_collection(input_)  # :nodoc:
         geometries_ = input_["geometries"]
-        geometries_ = [] unless geometries_.kind_of?(::Array)
+        geometries_ = [] unless geometries_.is_a?(::Array)
         decoded_geometries_ = []
         geometries_.each do |g_|
           g_ = _decode_geometry(g_)
@@ -271,12 +271,12 @@ module RGeo
       end
 
       def _decode_point_coords(point_coords_)  # :nodoc:
-        return nil unless point_coords_.kind_of?(::Array)
+        return nil unless point_coords_.is_a?(::Array)
         @geo_factory.point(*(point_coords_[0...@num_coordinates].map(&:to_f))) rescue nil
       end
 
       def _decode_line_string_coords(line_coords_) # :nodoc:
-        return nil unless line_coords_.kind_of?(::Array)
+        return nil unless line_coords_.is_a?(::Array)
         points_ = []
         line_coords_.each do |point_coords_|
           point_ = _decode_point_coords(point_coords_)
@@ -286,10 +286,10 @@ module RGeo
       end
 
       def _decode_polygon_coords(poly_coords_) # :nodoc:
-        return nil unless poly_coords_.kind_of?(::Array)
+        return nil unless poly_coords_.is_a?(::Array)
         rings_ = []
         poly_coords_.each do |ring_coords_|
-          return nil unless ring_coords_.kind_of?(::Array)
+          return nil unless ring_coords_.is_a?(::Array)
           points_ = []
           ring_coords_.each do |point_coords_|
             point_ = _decode_point_coords(point_coords_)
@@ -306,7 +306,7 @@ module RGeo
       end
 
       def _decode_multi_point_coords(multi_point_coords_) # :nodoc:
-        return nil unless multi_point_coords_.kind_of?(::Array)
+        return nil unless multi_point_coords_.is_a?(::Array)
         points_ = []
         multi_point_coords_.each do |point_coords_|
           point_ = _decode_point_coords(point_coords_)
@@ -316,7 +316,7 @@ module RGeo
       end
 
       def _decode_multi_line_string_coords(multi_line_coords_) # :nodoc:
-        return nil unless multi_line_coords_.kind_of?(::Array)
+        return nil unless multi_line_coords_.is_a?(::Array)
         lines_ = []
         multi_line_coords_.each do |line_coords_|
           line_ = _decode_line_string_coords(line_coords_)
@@ -326,7 +326,7 @@ module RGeo
       end
 
       def _decode_multi_polygon_coords(multi_polygon_coords_) # :nodoc:
-        return nil unless multi_polygon_coords_.kind_of?(::Array)
+        return nil unless multi_polygon_coords_.is_a?(::Array)
         polygons_ = []
         multi_polygon_coords_.each do |poly_coords_|
           poly_ = _decode_polygon_coords(poly_coords_)
