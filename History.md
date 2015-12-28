@@ -1,7 +1,15 @@
+### 0.4.0 / 2015-12-28
+
+* Removed error handling for missing parser gems
+* Removed class variables in Coder
+* Removed rgeo/geo_json.rb
+
+
 ### 0.3.3 / 2015-12-23
 
 * Rubocop style updates #20
 * Do not distribute test files with gem
+
 
 ### 0.3.2 / 2015-12-10
 
