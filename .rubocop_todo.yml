@@ -78,11 +78,6 @@ Style/IfUnlessModifier:
   Exclude:
     - 'lib/rgeo/geo_json/coder.rb'
 
-# Offense count: 4
-Style/OpMethod:
-  Exclude:
-    - 'lib/rgeo/geo_json/entities.rb'
-
 # Offense count: 2
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist.
 Style/PredicateName:
