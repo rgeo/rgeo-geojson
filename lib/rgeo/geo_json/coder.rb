@@ -6,8 +6,6 @@ module RGeo
     # settings every time.
 
     class Coder
-      @@activesupport_available = nil
-
       # Create a new coder settings object. The geo factory is passed as
       # a required argument.
       #
@@ -46,20 +44,9 @@ module RGeo
           require "yajl" unless defined?(Yajl)
           @json_parser = Proc.new { |str_| Yajl::Parser.new.parse(str_) }
         when :active_support
-          if @@activesupport_available.nil?
-            begin
-              require "active_support/json"
-              @@activesupport_available = true
-            rescue ::LoadError
-              @@activesupport_available = false
-            end
-          end
-          if @@activesupport_available
-            @json_parser = ::Proc.new { |str_| ::ActiveSupport::JSON.decode(str_) }
-          else
-            raise Error::RGeoError, "ActiveSupport::JSON library is not available. You may need to install the 'activesupport' gem."
-          end
-        when ::Proc, nil
+          require "active_support/json" unless defined?(ActiveSupport::JSON)
+          @json_parser = Proc.new { |str_| ActiveSupport::JSON.decode(str_) }
+        when Proc, nil
           # Leave as is
         else
           raise ::ArgumentError, "Unrecognzied json_parser: #{@json_parser.inspect}"
