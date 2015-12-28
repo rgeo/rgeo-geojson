@@ -40,8 +40,8 @@ module RGeo
       # This method uses the eql? method to test geometry equality, which
       # may behave differently than the == operator.
 
-      def eql?(rhs_)
-        rhs_.is_a?(Feature) && @geometry.eql?(rhs_.geometry) && @id.eql?(rhs_.feature_id) && @properties.eql?(rhs_.instance_variable_get(:@properties))
+      def eql?(other)
+        other.is_a?(Feature) && @geometry.eql?(other.geometry) && @id.eql?(other.feature_id) && @properties.eql?(other.instance_variable_get(:@properties))
       end
 
       # Two features are equal if their geometries, IDs, and properties
@@ -49,8 +49,8 @@ module RGeo
       # This method uses the == operator to test geometry equality, which
       # may behave differently than the eql? method.
 
-      def ==(rhs_)
-        rhs_.is_a?(Feature) && @geometry == rhs_.geometry && @id == rhs_.feature_id && @properties == rhs_.instance_variable_get(:@properties)
+      def ==(other)
+        other.is_a?(Feature) && @geometry == other.geometry && @id == other.feature_id && @properties == other.instance_variable_get(:@properties)
       end
 
       # Returns the geometry contained in this feature, which may be nil.
@@ -122,8 +122,8 @@ module RGeo
       # This methods uses the eql? method to test geometry equality, which
       # may behave differently than the == operator.
 
-      def eql?(rhs_)
-        rhs_.is_a?(FeatureCollection) && @features.eql?(rhs_.instance_variable_get(:@features))
+      def eql?(other)
+        other.is_a?(FeatureCollection) && @features.eql?(other.instance_variable_get(:@features))
       end
 
       # Two feature collections are equal if they contain the same
@@ -131,8 +131,8 @@ module RGeo
       # This methods uses the == operator to test geometry equality, which
       # may behave differently than the eql? method.
 
-      def ==(rhs_)
-        rhs_.is_a?(FeatureCollection) && @features == rhs_.instance_variable_get(:@features)
+      def ==(other)
+        other.is_a?(FeatureCollection) && @features == other.instance_variable_get(:@features)
       end
 
       # Iterates or returns an iterator for the features.
