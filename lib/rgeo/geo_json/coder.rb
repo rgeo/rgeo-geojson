@@ -6,7 +6,6 @@ module RGeo
     # settings every time.
 
     class Coder
-      @@json_available = nil
       @@yajl_available = nil
       @@activesupport_available = nil
 
@@ -32,7 +31,7 @@ module RGeo
       #   <tt>:active_support</tt>. Setting one of those special values
       #   will require the corresponding library to be available. Note
       #   that the <tt>:json</tt> library is present in the standard
-      #   library in Ruby 1.9, but requires the "json" gem in Ruby 1.8.
+      #   library in Ruby 1.9.
       #   If a parser is not specified, then the decode method will not
       #   accept a String or IO object; it will require a Hash.
 
@@ -42,19 +41,8 @@ module RGeo
         @json_parser = opts_[:json_parser]
         case @json_parser
         when :json
-          if @@json_available.nil?
-            begin
-              require "json"
-              @@json_available = true
-            rescue ::LoadError
-              @@json_available = false
-            end
-          end
-          if @@json_available
-            @json_parser = ::Proc.new { |str_| ::JSON.parse(str_) }
-          else
-            raise Error::RGeoError, "JSON library is not available. You may need to install the 'json' gem."
-          end
+          require "json" unless defined?(JSON)
+          @json_parser = Proc.new { |str_| JSON.parse(str_) }
         when :yajl
           if @@yajl_available.nil?
             begin
