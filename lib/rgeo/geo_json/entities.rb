@@ -14,17 +14,17 @@ module RGeo
       # Create a feature wrapping the given geometry, with the given ID
       # and properties.
 
-      def initialize(geometry_, id_ = nil, properties_ = {})
-        @geometry = geometry_
-        @id = id_
+      def initialize(geometry, id = nil, properties = {})
+        @geometry = geometry
+        @id = id
         @properties = {}
-        properties_.each do |k_, v_|
+        properties.each do |k_, v_|
           @properties[k_.to_s] = v_
         end
       end
 
       def inspect # :nodoc:
-        "#<#{self.class}:0x#{object_id.to_s(16)} id=#{@id.inspect} geom=#{@geometry ? @geometry.as_text.inspect : 'nil'}>"
+        "#<#{self.class}:0x#{objectid.to_s(16)} id=#{@id.inspect} geom=#{@geometry ? @geometry.as_text.inspect : 'nil'}>"
       end
 
       def to_s  # :nodoc:
@@ -72,8 +72,8 @@ module RGeo
       # Gets the value of the given named property.
       # Returns nil if the given property is not found.
 
-      def property(key_)
-        @properties[key_.to_s]
+      def property(key)
+        @properties[key.to_s]
       end
       alias_method :[], :property
 
@@ -100,9 +100,9 @@ module RGeo
       # Create a new FeatureCollection with the given features, which must
       # be provided as an Enumerable.
 
-      def initialize(features_ = [])
+      def initialize(features = [])
         @features = []
-        features_.each { |f_| @features << f_ if f_.is_a?(Feature) }
+        features.each { |f| @features << f if f.is_a?(Feature) }
       end
 
       def inspect # :nodoc:
@@ -137,8 +137,8 @@ module RGeo
 
       # Iterates or returns an iterator for the features.
 
-      def each(&block_)
-        @features.each(&block_)
+      def each(&block)
+        @features.each(&block)
       end
 
       # Returns the number of features contained in this collection.
@@ -149,8 +149,8 @@ module RGeo
 
       # Access a feature by index.
 
-      def [](index_)
-        @features[index_]
+      def [](index)
+        @features[index]
       end
     end
 
@@ -163,55 +163,55 @@ module RGeo
       # properties hash. Note that, per the GeoJSON spec, geometry and/or
       # properties may be nil.
 
-      def feature(geometry_, id_ = nil, properties_ = nil)
-        Feature.new(geometry_, id_, properties_ || {})
+      def feature(geometry, id = nil, properties = nil)
+        Feature.new(geometry, id, properties || {})
       end
 
       # Create and return a new feature collection, given an enumerable
       # of feature objects.
 
-      def feature_collection(features_ = [])
-        FeatureCollection.new(features_)
+      def feature_collection(features = [])
+        FeatureCollection.new(features)
       end
 
       # Returns true if the given object is a feature created by this
       # entity factory.
 
-      def is_feature?(object_)
-        object_.is_a?(Feature)
+      def is_feature?(object)
+        object.is_a?(Feature)
       end
 
       # Returns true if the given object is a feature collection created
       # by this entity factory.
 
-      def is_feature_collection?(object_)
-        object_.is_a?(FeatureCollection)
+      def is_feature_collection?(object)
+        object.is_a?(FeatureCollection)
       end
 
       # Run Enumerable#map on the features contained in the given feature
       # collection.
 
-      def map_feature_collection(object_, &block_)
-        object_.map(&block_)
+      def map_feature_collection(object, &block)
+        object.map(&block)
       end
 
       # Returns the geometry associated with the given feature.
 
-      def get_feature_geometry(object_)
-        object_.geometry
+      def get_feature_geometry(object)
+        object.geometry
       end
 
       # Returns the ID of the given feature, or nil for no ID.
 
-      def get_feature_id(object_)
-        object_.feature_id
+      def get_feature_id(object)
+        object.feature_id
       end
 
       # Returns the properties of the given feature as a hash. Editing
       # this hash does not change the state of the feature.
 
-      def get_feature_properties(object_)
-        object_.properties
+      def get_feature_properties(object)
+        object.properties
       end
 
       # Return the singleton instance of EntityFactory.

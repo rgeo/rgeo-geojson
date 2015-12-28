@@ -12,8 +12,8 @@ module RGeo
       # encode supports objects of type RGeo::GeoJSON::Feature and
       # RGeo::GeoJSON::FeatureCollection.
 
-      def encode(object_, opts_ = {})
-        Coder.new(opts_).encode(object_)
+      def encode(object, opts = {})
+        Coder.new(opts).encode(object)
       end
 
       # High-level convenience routine for decoding an object from GeoJSON.
@@ -43,8 +43,8 @@ module RGeo
       #   If a parser is not specified, then the decode method will not
       #   accept a String or IO object; it will require a Hash.
 
-      def decode(input_, opts_ = {})
-        Coder.new(opts_).decode(input_)
+      def decode(input_, opts = {})
+        Coder.new(opts).decode(input_)
       end
 
       # Creates and returns a coder object of type RGeo::GeoJSON::Coder
@@ -75,8 +75,8 @@ module RGeo
       #   If a parser is not specified, then the decode method will not
       #   accept a String or IO object; it will require a Hash.
 
-      def coder(opts_ = {})
-        Coder.new(opts_)
+      def coder(opts = {})
+        Coder.new(opts)
       end
     end
   end
