@@ -1,3 +1,8 @@
+### 0.4.1 / 2015-12-29
+
+* Restore rgeo/geo_json.rb
+
+
 ### 0.4.0 / 2015-12-28
 
 * Removed error handling for missing parser gems
