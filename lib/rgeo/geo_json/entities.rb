@@ -23,15 +23,15 @@ module RGeo
         end
       end
 
-      def inspect # :nodoc:
+      def inspect
         "#<#{self.class}:0x#{object_id.to_s(16)} id=#{@id.inspect} geom=#{@geometry ? @geometry.as_text.inspect : 'nil'}>"
       end
 
-      def to_s  # :nodoc:
+      def to_s
         inspect
       end
 
-      def hash  # :nodoc:
+      def hash
         @geometry.hash + @id.hash + @properties.hash
       end
 
@@ -105,15 +105,15 @@ module RGeo
         features.each { |f| @features << f if f.is_a?(Feature) }
       end
 
-      def inspect # :nodoc:
+      def inspect
         "#<#{self.class}:0x#{object_id.to_s(16)}>"
       end
 
-      def to_s  # :nodoc:
+      def to_s
         inspect
       end
 
-      def hash  # :nodoc:
+      def hash
         @features.hash
       end
 
