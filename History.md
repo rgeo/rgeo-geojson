@@ -1,3 +1,8 @@
+### 0.4.2 / 2016-1-5
+
+* Fix Feature#inspect #21
+
+
 ### 0.4.1 / 2015-12-29
 
 * Restore rgeo/geo_json.rb
