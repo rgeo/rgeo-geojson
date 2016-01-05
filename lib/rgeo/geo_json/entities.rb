@@ -24,7 +24,7 @@ module RGeo
       end
 
       def inspect # :nodoc:
-        "#<#{self.class}:0x#{objectid.to_s(16)} id=#{@id.inspect} geom=#{@geometry ? @geometry.as_text.inspect : 'nil'}>"
+        "#<#{self.class}:0x#{object_id.to_s(16)} id=#{@id.inspect} geom=#{@geometry ? @geometry.as_text.inspect : 'nil'}>"
       end
 
       def to_s  # :nodoc:
