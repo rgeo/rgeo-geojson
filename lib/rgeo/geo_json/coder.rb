@@ -6,6 +6,7 @@ module RGeo
     # settings every time.
 
     class Coder
+      @@round_koef_available = nil
       # Create a new coder settings object. The geo factory is passed as
       # a required argument.
       #
@@ -32,10 +33,18 @@ module RGeo
       #   If a parser is not specified, then the decode method will not
       #   accept a String or IO object; it will require a Hash.
 
-      def initialize(opts = {})
-        @geo_factory = opts[:geo_factory] || RGeo::Cartesian.preferred_factory
-        @entity_factory = opts[:entity_factory] || EntityFactory.instance
-        @json_parser = opts[:json_parser]
+      def initialize(opts_={})
+        @geo_factory = opts_[:geo_factory] || ::RGeo::Cartesian.preferred_factory
+        @entity_factory = opts_[:entity_factory] || EntityFactory.instance
+        @json_parser = opts_[:json_parser]
+
+        if opts_.has_key?(:round_koef)
+          @@round_koef_available = true
+          @round_koef = opts_[:round_koef]
+        else
+          @@round_koef_available = false
+        end
+
         case @json_parser
         when :json
           require "json" unless defined?(JSON)
@@ -135,70 +144,92 @@ module RGeo
         json
       end
 
-      def _encode_geometry(object, point_encoder = nil) # :nodoc:
+      def _encode_geometry(object, point_encoder = nil)  # :nodoc:
         unless point_encoder
-          if object.factory.property(:has_z_coordinate)
-            if object.factory.property(:has_m_coordinate)
-              point_encoder = proc { |p| [p.x, p.y, p.z, p.m] }
-            else
-              point_encoder = proc { |p| [p.x, p.y, p.z] }
-            end
-          else
-            if object.factory.property(:has_m_coordinate)
-              point_encoder = proc { |p| [p.x, p.y, p.m] }
-            else
-              point_encoder = proc { |p| [p.x, p.y] }
-            end
-          end
+          point_encoder = get_point_encoder(object)
         end
+
         case object
-        when RGeo::Feature::Point
+        when ::RGeo::Feature::Point
           {
             "type" => "Point",
-            "coordinates" => object.coordinates
+            "coordinates" => point_encoder.call(object)
           }
         when RGeo::Feature::LineString
           {
             "type" => "LineString",
-            "coordinates" => object.coordinates
+            "coordinates" => object.points.map(&point_encoder)
           }
         when RGeo::Feature::Polygon
           {
             "type" => "Polygon",
-            "coordinates" => object.coordinates
+            "coordinates" => [object.exterior_ring.points.map(&point_encoder)] + object.interior_rings.map{ |r_| r_.points.map(&point_encoder) }
           }
         when RGeo::Feature::MultiPoint
           {
             "type" => "MultiPoint",
-            "coordinates" => object.coordinates
+            "coordinates" => object.map(&point_encoder)
           }
         when RGeo::Feature::MultiLineString
           {
             "type" => "MultiLineString",
-            "coordinates" => object.coordinates
+            "coordinates" => object.map{ |ls_| ls_.points.map(&point_encoder) }
           }
         when RGeo::Feature::MultiPolygon
           {
             "type" => "MultiPolygon",
-            "coordinates" => object.coordinates
+            "coordinates" => object.map{ |poly| [poly.exterior_ring.points.map(&point_encoder)] + poly.interior_rings.map{ |r| r.points.map(&point_encoder) } }
           }
         when RGeo::Feature::GeometryCollection
           {
             "type" => "GeometryCollection",
-            "geometries" => object.map { |geom| _encode_geometry(geom, point_encoder) },
+            "geometries" => object.map { |geom| _encode_geometry(geom, point_encoder) }
           }
         else
           nil
         end
       end
 
-      def _decode_feature(input) # :nodoc:
-        geometry = input["geometry"]
-        if geometry
-          geometry = _decode_geometry(geometry)
-          return nil unless geometry
+      def get_point_encoder object
+        if @@round_koef_available
+          if object.factory.property(:has_z_coordinate)
+            if object.factory.property(:has_m_coordinate)
+                point_encoder_ = ::Proc.new{ |p_| [p_.x.round(@round_koef), p_.y.round(@round_koef), p_.z.round(@round_koef), p_.m.round(@round_koef)] }
+            else
+                point_encoder_ = ::Proc.new{ |p_| [p_.x.round(@round_koef), p_.y.round(@round_koef), p_.z.round(@round_koef)] }
+            end
+          else
+            if object.factory.property(:has_m_coordinate)
+                point_encoder_ = ::Proc.new { |p_| [p_.x.round(@round_koef), p_.y.round(@round_koef), p_.m.round(@round_koef)] }
+            else
+                point_encoder_ = ::Proc.new{ |p_| [p_.x.round(@round_koef), p_.y.round(@round_koef)] }
+            end
+          end
+        else
+          if object.factory.property(:has_z_coordinate)
+            if object.factory.property(:has_m_coordinate)
+                point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.z, p_.m] }
+            else
+                point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y, p_.z] }
+            end
+          else
+            if object.factory.property(:has_m_coordinate)
+                point_encoder_ = ::Proc.new { |p_| [p_.x, p_.y, p_.m] }
+            else
+                point_encoder_ = ::Proc.new{ |p_| [p_.x, p_.y] }
+            end
+          end
         end
-        @entity_factory.feature(geometry, input["id"], input["properties"])
+        return point_encoder_
+      end
+
+      def _decode_feature(input_)  # :nodoc:
+        geometry_ = input_['geometry']
+        if geometry_
+          geometry_ = _decode_geometry(geometry_)
+          return nil unless geometry_
+        end
+        @entity_factory.feature(geometry_, input_['id'], input_['properties'])
       end
 
       def _decode_geometry(input) # :nodoc:

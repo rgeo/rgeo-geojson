@@ -89,6 +89,15 @@ class BasicTest < Minitest::Test # :nodoc:
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
   end
 
+  def test_feature_round
+    object = @geo_factory.point(10.5555, 20.3333)
+    json = {
+        'type' => 'Point',
+        'coordinates' => [10.6, 20.3],
+    }
+    assert_equal(json, ::RGeo::GeoJSON.encode(object, round_koef: 1))
+  end
+
   def test_multi_point
     object = @geo_factory.multi_point([@geo_factory.point(10, 20), @geo_factory.point(12, 22), @geo_factory.point(-3, 24)])
     json = {
