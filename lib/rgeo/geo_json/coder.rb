@@ -135,22 +135,7 @@ module RGeo
         json
       end
 
-      def _encode_geometry(object, point_encoder = nil) # :nodoc:
-        unless point_encoder
-          if object.factory.property(:has_z_coordinate)
-            if object.factory.property(:has_m_coordinate)
-              point_encoder = proc { |p| [p.x, p.y, p.z, p.m] }
-            else
-              point_encoder = proc { |p| [p.x, p.y, p.z] }
-            end
-          else
-            if object.factory.property(:has_m_coordinate)
-              point_encoder = proc { |p| [p.x, p.y, p.m] }
-            else
-              point_encoder = proc { |p| [p.x, p.y] }
-            end
-          end
-        end
+      def _encode_geometry(object) # :nodoc:
         case object
         when RGeo::Feature::Point
           {
@@ -185,7 +170,7 @@ module RGeo
         when RGeo::Feature::GeometryCollection
           {
             "type" => "GeometryCollection",
-            "geometries" => object.map { |geom| _encode_geometry(geom, point_encoder) },
+            "geometries" => object.map { |geom| _encode_geometry(geom) }
           }
         else
           nil
