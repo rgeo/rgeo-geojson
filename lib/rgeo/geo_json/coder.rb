@@ -220,7 +220,7 @@ module RGeo
 
       def _decode_point_coords(point_coords)  # :nodoc:
         return nil unless point_coords.is_a?(Array)
-        @geo_factory.point(*(point_coords[0...@num_coordinates].map(&:to_f))) rescue nil
+        @geo_factory.point(*point_coords[0...@num_coordinates].map(&:to_f)) rescue nil
       end
 
       def _decode_line_string_coords(line_coords) # :nodoc:
@@ -246,7 +246,7 @@ module RGeo
           ring = @geo_factory.linear_ring(points)
           rings << ring if ring
         end
-        if rings.size == 0
+        if rings.empty?
           nil
         else
           @geo_factory.polygon(rings[0], rings[1..-1])
