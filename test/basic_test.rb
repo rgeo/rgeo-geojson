@@ -237,4 +237,10 @@ class BasicTest < Minitest::Test # :nodoc:
     assert_equal(json, RGeo::GeoJSON.encode(object))
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
   end
+
+  def test_feature_property
+    feature = RGeo::GeoJSON::Feature.new(nil, nil, a: "b")
+    assert_equal "b", feature.properties["a"]
+    assert_equal "b", feature["a"]
+  end
 end

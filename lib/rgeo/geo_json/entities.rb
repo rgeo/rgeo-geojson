@@ -75,7 +75,7 @@ module RGeo
       def property(key)
         @properties[key.to_s]
       end
-      alias_method :[], :property
+      alias [] property
 
       # Gets an array of the known property keys in this feature.
 
