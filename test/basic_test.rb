@@ -162,11 +162,8 @@ class BasicTest < Minitest::Test # :nodoc:
   end
 
   def test_feature_nulls
-    json = {
-      "type" => "Feature",
-      "geometry" => nil,
-      "properties" => nil,
-    }
+    feature = @entity_factory.feature(nil, nil, nil)
+    json = RGeo::GeoJSON.encode(feature)
     obj_ = RGeo::GeoJSON.decode(json, geo_factory: @geo_factory)
     refute_nil(obj_)
     assert_nil(obj_.geometry)
