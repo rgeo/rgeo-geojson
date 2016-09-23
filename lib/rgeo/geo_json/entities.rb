@@ -14,17 +14,18 @@ module RGeo
       # Create a feature wrapping the given geometry, with the given ID
       # and properties.
 
-      def initialize(geometry, id = nil, properties = {})
+      def initialize(geometry, id = nil, properties = {}, bbox = nil)
         @geometry = geometry
         @id = id
         @properties = {}
         properties.each do |k, v|
           @properties[k.to_s] = v
         end
+        @bbox = bbox
       end
 
       def inspect
-        "#<#{self.class}:0x#{object_id.to_s(16)} id=#{@id.inspect} geom=#{@geometry ? @geometry.as_text.inspect : 'nil'}>"
+        "#<#{self.class}:0x#{object_id.to_s(16)} id=#{@id.inspect} geom=#{@geometry ? @geometry.as_text.inspect : 'nil'} bbox=#{bbox}>"
       end
 
       def to_s
@@ -56,6 +57,10 @@ module RGeo
       # Returns the geometry contained in this feature, which may be nil.
 
       attr_reader :geometry
+
+      # Returns the bounding box of the feature, which may be nil.
+
+      attr_reader :bbox
 
       # Returns the ID for this feature, which may be nil.
 
@@ -100,9 +105,10 @@ module RGeo
       # Create a new FeatureCollection with the given features, which must
       # be provided as an Enumerable.
 
-      def initialize(features = [])
+      def initialize(features = [], bbox=nil)
         @features = []
         features.each { |f| @features << f if f.is_a?(Feature) }
+        @bbox = bbox
       end
 
       def inspect
@@ -152,6 +158,11 @@ module RGeo
       def [](index)
         @features[index]
       end
+
+      # Returns the bounding box of the feature, which may be nil.
+
+      attr_reader :bbox
+
     end
 
     # This is the default entity factory. It creates objects of type
@@ -163,15 +174,15 @@ module RGeo
       # properties hash. Note that, per the GeoJSON spec, geometry and/or
       # properties may be nil.
 
-      def feature(geometry, id = nil, properties = nil)
-        Feature.new(geometry, id, properties || {})
+      def feature(geometry, id = nil, properties = nil, bbox = nil)
+        Feature.new(geometry, id, properties || {}, bbox)
       end
 
       # Create and return a new feature collection, given an enumerable
       # of feature objects.
 
-      def feature_collection(features = [])
-        FeatureCollection.new(features)
+      def feature_collection(features = [], bbox = nil)
+        FeatureCollection.new(features, bbox)
       end
 
       # Returns true if the given object is a feature created by this

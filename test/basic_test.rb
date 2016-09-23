@@ -202,8 +202,25 @@ class BasicTest < Minitest::Test # :nodoc:
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
   end
 
+  def test_feature_with_bbox
+    polygon = @geo_factory.polygon(@geo_factory.linear_ring([@geo_factory.point(-10, -10), @geo_factory.point(-10, 10), @geo_factory.point(10,  10), @geo_factory.point(-10, -10)]))
+    object = @entity_factory.feature(polygon, 2, {"prop1" => "foo", "prop2" => "bar"}, [-10.0, -10.0, 10.0, 10.0])
+    json = {
+      "type" => "Feature",
+      "geometry" => {
+        "type" => "Polygon",
+        "coordinates" => [[[-10.0, -10.0], [-10.0, 10.0], [10.0, 10.0], [-10.0, -10.0]]],
+      },
+      "id" => 2,
+      "properties" => { "prop1" => "foo", "prop2" => "bar" },
+      "bbox" => [-10.0, -10.0, 10.0, 10.0]
+    }
+    assert_equal(json, RGeo::GeoJSON.encode(object))
+    assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
+  end
+
   def test_feature_collection
-    object = @entity_factory.feature_collection([@entity_factory.feature(@geo_factory.point(10, 20)), @entity_factory.feature(@geo_factory.point(11, 22)), @entity_factory.feature(@geo_factory.point(10, 20), 8)])
+    object = @entity_factory.feature_collection([@entity_factory.feature(@geo_factory.point(10, 20)), @entity_factory.feature(@geo_factory.point(11, 22)), @entity_factory.feature(@geo_factory.point(10, 20), 8)], [10.0, 20.0, 11.0, 22.0])
     json = {
       "type" => "FeatureCollection",
       "features" => [
@@ -232,7 +249,8 @@ class BasicTest < Minitest::Test # :nodoc:
           "id" => 8,
           "properties" => {},
         },
-      ]
+      ],
+      "bbox" => [10.0, 20.0, 11.0, 22.0]
     }
     assert_equal(json, RGeo::GeoJSON.encode(object))
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))

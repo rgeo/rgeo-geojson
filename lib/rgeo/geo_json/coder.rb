@@ -70,10 +70,12 @@ module RGeo
 
       def encode(object)
         if @entity_factory.is_feature_collection?(object)
-          {
+          json = {
             "type" => "FeatureCollection",
-            "features" => @entity_factory.map_feature_collection(object) { |f| _encode_feature(f) },
+            "features" => @entity_factory.map_feature_collection(object) { |f| _encode_feature(f) }
           }
+          json["bbox"] = object.bbox if object.bbox
+          json
         elsif @entity_factory.is_feature?(object)
           _encode_feature(object)
         elsif object.nil?
@@ -107,7 +109,7 @@ module RGeo
               decoded_features << _decode_feature(f)
             end
           end
-          @entity_factory.feature_collection(decoded_features)
+          @entity_factory.feature_collection(decoded_features, input["bbox"])
         when "Feature"
           _decode_feature(input)
         else
@@ -132,6 +134,7 @@ module RGeo
         }
         id = @entity_factory.get_feature_id(object)
         json["id"] = id if id
+        json["bbox"] = object.bbox if object.bbox
         json
       end
 
@@ -183,7 +186,7 @@ module RGeo
           geometry = _decode_geometry(geometry)
           return nil unless geometry
         end
-        @entity_factory.feature(geometry, input["id"], input["properties"])
+        @entity_factory.feature(geometry, input["id"], input["properties"], input["bbox"])
       end
 
       def _decode_geometry(input) # :nodoc:
