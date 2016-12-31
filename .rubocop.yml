@@ -14,3 +14,9 @@ Style/StringLiterals:
 
 Style/TrailingCommaInLiteral:
   Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false
