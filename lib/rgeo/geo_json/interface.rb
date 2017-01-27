@@ -35,7 +35,7 @@ module RGeo
       #   Specifies a JSON parser to use when decoding a String or IO
       #   object. The value may be a Proc object taking the string as the
       #   sole argument and returning the JSON hash, or it may be one of
-      #   the special values <tt>:json</tt>, <tt>:yajl</tt>, or
+      #   the special values <tt>:json</tt>, <tt>:yajl</tt>, <tt>:oj</tt>, or
       #   <tt>:active_support</tt>. Setting one of those special values
       #   will require the corresponding library to be available. Note
       #   that the <tt>:json</tt> library is present in the standard
@@ -67,7 +67,7 @@ module RGeo
       #   Specifies a JSON parser to use when decoding a String or IO
       #   object. The value may be a Proc object taking the string as the
       #   sole argument and returning the JSON hash, or it may be one of
-      #   the special values <tt>:json</tt>, <tt>:yajl</tt>, or
+      #   the special values <tt>:json</tt>, <tt>:yajl</tt>, <tt>:oj</tt>,  or
       #   <tt>:active_support</tt>. Setting one of those special values
       #   will require the corresponding library to be available. Note
       #   that the <tt>:json</tt> library is present in the standard
