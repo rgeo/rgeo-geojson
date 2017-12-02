@@ -1,5 +1,5 @@
 module RGeo
   module GeoJSON
-    VERSION = "0.4.3".freeze
+    VERSION = "1.0.0.rc1".freeze
   end
 end
