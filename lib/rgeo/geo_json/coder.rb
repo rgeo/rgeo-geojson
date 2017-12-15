@@ -37,17 +37,19 @@ module RGeo
         @entity_factory = opts[:entity_factory] || EntityFactory.instance
         @json_parser = opts[:json_parser]
         case @json_parser
+        when :json, nil
+          require "json" unless defined?(JSON)
+          @json_parser = proc { |str| JSON.parse(str) }
         when :yajl
           require "yajl" unless defined?(Yajl)
           @json_parser = proc { |str| Yajl::Parser.new.parse(str) }
         when :active_support
           require "active_support/json" unless defined?(ActiveSupport::JSON)
           @json_parser = proc { |str| ActiveSupport::JSON.decode(str) }
-        when Proc, nil
+        when Proc
           # Leave as is
         else
-          require "json" unless defined?(JSON)
-          @json_parser = proc { |str| JSON.parse(str) }
+          raise ::ArgumentError, "Unrecognzied json_parser: #{@json_parser.inspect}"
         end
         @num_coordinates = 2
         @num_coordinates += 1 if @geo_factory.property(:has_z_coordinate)
