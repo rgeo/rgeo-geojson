@@ -25,7 +25,7 @@ Example:
 require 'rgeo/geo_json'
 
 str1 = '{"type":"Point","coordinates":[1,2]}'
-geom = RGeo::GeoJSON.decode(str1, json_parser: :json)
+geom = RGeo::GeoJSON.decode(str1)
 geom.as_text              # => "POINT(1.0 2.0)"
 
 str2 = '{"type":"Feature","geometry":{"type":"Point","coordinates":[2.5,4.0]},"properties":{"color":"red"}}'

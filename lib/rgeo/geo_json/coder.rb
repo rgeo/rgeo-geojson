@@ -29,8 +29,6 @@ module RGeo
       #   will require the corresponding library to be available. Note
       #   that the <tt>:json</tt> library is present in the standard
       #   library in Ruby 1.9.
-      #   If a parser is not specified, then the decode method will not
-      #   accept a String or IO object; it will require a Hash.
 
       def initialize(opts = {})
         @geo_factory = opts[:geo_factory] || RGeo::Cartesian.preferred_factory
