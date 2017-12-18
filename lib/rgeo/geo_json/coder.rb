@@ -20,37 +20,9 @@ module RGeo
       #   RGeo::GeoJSON::EntityFactory, which generates objects of type
       #   RGeo::GeoJSON::Feature or RGeo::GeoJSON::FeatureCollection.
       #   See RGeo::GeoJSON::EntityFactory for more information.
-      # [<tt>:json_parser</tt>]
-      #   Specifies a JSON parser to use when decoding a String or IO
-      #   object. The value may be a Proc object taking the string as the
-      #   sole argument and returning the JSON hash, or it may be one of
-      #   the special values <tt>:json</tt>, <tt>:yajl</tt>, or
-      #   <tt>:active_support</tt>. Setting one of those special values
-      #   will require the corresponding library to be available. Note
-      #   that the <tt>:json</tt> library is present in the standard
-      #   library in Ruby 1.9.
-      #   If a parser is not specified, then the decode method will not
-      #   accept a String or IO object; it will require a Hash.
-
       def initialize(opts = {})
         @geo_factory = opts[:geo_factory] || RGeo::Cartesian.preferred_factory
         @entity_factory = opts[:entity_factory] || EntityFactory.instance
-        @json_parser = opts[:json_parser]
-        case @json_parser
-        when :json
-          require "json" unless defined?(JSON)
-          @json_parser = proc { |str| JSON.parse(str) }
-        when :yajl
-          require "yajl" unless defined?(Yajl)
-          @json_parser = proc { |str| Yajl::Parser.new.parse(str) }
-        when :active_support
-          require "active_support/json" unless defined?(ActiveSupport::JSON)
-          @json_parser = proc { |str| ActiveSupport::JSON.decode(str) }
-        when Proc, nil
-          # Leave as is
-        else
-          raise ::ArgumentError, "Unrecognzied json_parser: #{@json_parser.inspect}"
-        end
         @num_coordinates = 2
         @num_coordinates += 1 if @geo_factory.property(:has_z_coordinate)
         @num_coordinates += 1 if @geo_factory.property(:has_m_coordinate)
@@ -92,7 +64,7 @@ module RGeo
           input = input.read rescue nil
         end
         if input.is_a?(String)
-          input = @json_parser.call(input) rescue nil
+          input = JSON.parse(input)
         end
         unless input.is_a?(Hash)
           return nil
@@ -123,6 +95,8 @@ module RGeo
       # wrapper entities.
 
       attr_reader :entity_factory
+
+      private
 
       def _encode_feature(object) # :nodoc:
         json = {

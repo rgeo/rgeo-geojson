@@ -19,6 +19,19 @@ class BasicTest < Minitest::Test # :nodoc:
     assert_nil(RGeo::GeoJSON.decode(nil, geo_factory: @geo_factory))
   end
 
+  def test_decode_simple_point
+    json = %({"type":"Point","coordinates":[1,2]})
+    point = RGeo::GeoJSON.decode(json)
+    assert_equal "POINT (1.0 2.0)", point.as_text
+  end
+
+  def test_decode_point
+    json = '{"type":"Feature","geometry":{"type":"Point","coordinates":[2.5,4.0]},"properties":{"color":"red"}}'
+    feature = RGeo::GeoJSON.decode(json)
+    assert_equal "red", feature["color"]
+    assert_equal "POINT (2.5 4.0)", feature.geometry.as_text
+  end
+
   def test_point
     object = @geo_factory.point(10, 20)
     json = {
