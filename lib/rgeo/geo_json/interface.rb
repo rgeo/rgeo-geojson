@@ -31,18 +31,6 @@ module RGeo
       #   RGeo::GeoJSON::EntityFactory, which generates objects of type
       #   RGeo::GeoJSON::Feature or RGeo::GeoJSON::FeatureCollection.
       #   See RGeo::GeoJSON::EntityFactory for more information.
-      # [<tt>:json_parser</tt>]
-      #   Specifies a JSON parser to use when decoding a String or IO
-      #   object. The value may be a Proc object taking the string as the
-      #   sole argument and returning the JSON hash, or it may be one of
-      #   the special values <tt>:json</tt>, <tt>:yajl</tt>, or
-      #   <tt>:active_support</tt>. Setting one of those special values
-      #   will require the corresponding library to be available. Note
-      #   that the <tt>:json</tt> library is present in the standard
-      #   library in Ruby 1.9, but requires the "json" gem in Ruby 1.8.
-      #   If a parser is not specified, then the decode method will not
-      #   accept a String or IO object; it will require a Hash.
-
       def decode(input_, opts = {})
         Coder.new(opts).decode(input_)
       end
@@ -63,18 +51,6 @@ module RGeo
       #   RGeo::GeoJSON::EntityFactory, which generates objects of type
       #   RGeo::GeoJSON::Feature or RGeo::GeoJSON::FeatureCollection.
       #   See RGeo::GeoJSON::EntityFactory for more information.
-      # [<tt>:json_parser</tt>]
-      #   Specifies a JSON parser to use when decoding a String or IO
-      #   object. The value may be a Proc object taking the string as the
-      #   sole argument and returning the JSON hash, or it may be one of
-      #   the special values <tt>:json</tt>, <tt>:yajl</tt>, or
-      #   <tt>:active_support</tt>. Setting one of those special values
-      #   will require the corresponding library to be available. Note
-      #   that the <tt>:json</tt> library is present in the standard
-      #   library in Ruby 1.9, but requires the "json" gem in Ruby 1.8.
-      #   If a parser is not specified, then the decode method will not
-      #   accept a String or IO object; it will require a Hash.
-
       def coder(opts = {})
         Coder.new(opts)
       end
