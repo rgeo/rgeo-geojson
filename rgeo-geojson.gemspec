@@ -12,7 +12,6 @@ Gem::Specification.new do |spec|
   spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
   spec.homepage = "https://github.com/rgeo/rgeo-geojson"
   spec.license = "BSD"
-  spec.platform = Gem::Platform::RUBY
 
   spec.files = Dir["lib/**/*.rb", "*.md", "LICENSE.txt"]
 
