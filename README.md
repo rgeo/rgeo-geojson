@@ -39,10 +39,10 @@ hash.to_json == str2      # => true
 
 ## Install
 
-`RGeo::GeoJSON` has the following requirements:
+`RGeo::GeoJSON` requires:
 
-* Ruby 1.9.3 or later
-* rgeo 0.5.0 or later.
+* Ruby 2.1.0 or later
+* rgeo 1.0.0 or later
 
 Include in your bundle:
 
@@ -56,7 +56,7 @@ Install `rgeo-geojson` as a gem:
 gem install rgeo-geojson
 ```
 
-See the README for the "rgeo" gem, a required dependency, for further installation information.
+See the README for the `rgeo` gem, a required dependency, for further installation information.
 
 ### Development and support
 
@@ -72,7 +72,7 @@ Report bugs on Github issues at http://github.com/rgeo/rgeo-geojson/issues
 
 RGeo was created by Daniel Azuma (http://www.daniel-azuma.com).
 
-Development is supported by [Pirq](http://www.pirq.com) and
+Development is/was supported by [Pirq](http://www.pirq.com) and
 [Neighborland](https://neighborland.com).
 
 ### License
