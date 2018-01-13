@@ -1,4 +1,16 @@
-### 0.4.2 / 2016-1-5
+### 2.0.0 / 2018-01-13
+
+* Remove :json_parser option #38
+  * Use stdlib JSON parser
+
+
+### 1.0.0 / 2017-12-02
+
+* Require ruby 2.1+
+* Require rgeo 1.0+ #36
+
+
+### 0.4.2 / 2016-01-05
 
 * Fix Feature#inspect #21
 
@@ -10,9 +22,9 @@
 
 ### 0.4.0 / 2015-12-28
 
-* Removed error handling for missing parser gems
-* Removed class variables in Coder
-* Removed rgeo/geo_json.rb
+* Remove error handling for missing parser gems
+* Remove class variables in Coder
+* Remove rgeo/geo_json.rb
 
 
 ### 0.3.3 / 2015-12-23
@@ -24,7 +36,7 @@
 ### 0.3.2 / 2015-12-10
 
 * Faster coordinates methods (tneems) #18
-* Requires rgeo 0.5.0+
+* Require rgeo 0.5.0+
 
 
 ### 0.3.1 / 2014-05-29
