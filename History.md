@@ -1,3 +1,9 @@
+### 2.1.0 / 2018-11-27
+
+* Allow rgeo 2.0
+* Require ruby 2.3+
+
+
 ### 2.0.0 / 2018-01-13
 
 * Remove :json_parser option #38
