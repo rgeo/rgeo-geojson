@@ -195,7 +195,7 @@ module RGeo
 
       def decode_point_coords(point_coords)
         return unless point_coords.is_a?(Array)
-        @geo_factory.point(*(point_coords[0...@num_coordinates].map(&:to_f))) rescue nil
+        @geo_factory.point(*point_coords[0...@num_coordinates].map(&:to_f)) rescue nil
       end
 
       def decode_line_string_coords(line_coords)
