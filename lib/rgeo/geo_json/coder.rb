@@ -66,9 +66,8 @@ module RGeo
         if input.is_a?(String)
           input = JSON.parse(input)
         end
-        unless input.is_a?(Hash)
-          return nil
-        end
+        return unless input.is_a?(Hash)
+
         case input["type"]
         when "FeatureCollection"
           features = input["features"]
@@ -182,14 +181,14 @@ module RGeo
       end
 
       def decode_geometry_collection(input)
-        geometries_ = input["geometries"]
-        geometries_ = [] unless geometries_.is_a?(Array)
-        decoded_geometries_ = []
-        geometries_.each do |g_|
-          g_ = decode_geometry(g_)
-          decoded_geometries_ << g_ if g_
+        geometries = input["geometries"]
+        geometries = [] unless geometries.is_a?(Array)
+        decoded_geometries = []
+        geometries.each do |geometry|
+          geometry = decode_geometry(geometry)
+          decoded_geometries << geometry if geometry
         end
-        @geo_factory.collection(decoded_geometries_)
+        @geo_factory.collection(decoded_geometries)
       end
 
       def decode_point_coords(point_coords)
