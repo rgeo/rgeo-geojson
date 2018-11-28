@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.version = RGeo::GeoJSON::VERSION
 
-  spec.required_ruby_version = ">= 2.1.0"
+  spec.required_ruby_version = ">= 2.3.0"
 
   spec.add_dependency "rgeo", ">= 1.0.0"
 
