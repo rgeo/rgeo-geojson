@@ -44,14 +44,14 @@ module RGeo
         if @entity_factory.is_feature_collection?(object)
           {
             "type" => "FeatureCollection",
-            "features" => @entity_factory.map_feature_collection(object) { |f| _encode_feature(f) },
+            "features" => @entity_factory.map_feature_collection(object) { |f| encode_feature(f) },
           }
         elsif @entity_factory.is_feature?(object)
-          _encode_feature(object)
+          encode_feature(object)
         elsif object.nil?
           nil
         else
-          _encode_geometry(object)
+          encode_geometry(object)
         end
       end
 
@@ -76,14 +76,14 @@ module RGeo
           decoded_features = []
           features.each do |f|
             if f["type"] == "Feature"
-              decoded_features << _decode_feature(f)
+              decoded_features << decode_feature(f)
             end
           end
           @entity_factory.feature_collection(decoded_features)
         when "Feature"
-          _decode_feature(input)
+          decode_feature(input)
         else
-          _decode_geometry(input)
+          decode_geometry(input)
         end
       end
 
@@ -98,10 +98,10 @@ module RGeo
 
       private
 
-      def _encode_feature(object) # :nodoc:
+      def encode_feature(object)
         json = {
           "type" => "Feature",
-          "geometry" => _encode_geometry(@entity_factory.get_feature_geometry(object)),
+          "geometry" => encode_geometry(@entity_factory.get_feature_geometry(object)),
           "properties" => @entity_factory.get_feature_properties(object).dup,
         }
         id = @entity_factory.get_feature_id(object)
@@ -109,7 +109,7 @@ module RGeo
         json
       end
 
-      def _encode_geometry(object) # :nodoc:
+      def encode_geometry(object)
         case object
         when RGeo::Feature::Point
           {
@@ -144,77 +144,77 @@ module RGeo
         when RGeo::Feature::GeometryCollection
           {
             "type" => "GeometryCollection",
-            "geometries" => object.map { |geom| _encode_geometry(geom) }
+            "geometries" => object.map { |geom| encode_geometry(geom) }
           }
         else
           nil
         end
       end
 
-      def _decode_feature(input) # :nodoc:
+      def decode_feature(input)
         geometry = input["geometry"]
         if geometry
-          geometry = _decode_geometry(geometry)
+          geometry = decode_geometry(geometry)
           return nil unless geometry
         end
         @entity_factory.feature(geometry, input["id"], input["properties"])
       end
 
-      def _decode_geometry(input) # :nodoc:
+      def decode_geometry(input)
         case input["type"]
         when "GeometryCollection"
-          _decode_geometry_collection(input)
+          decode_geometry_collection(input)
         when "Point"
-          _decode_point_coords(input["coordinates"])
+          decode_point_coords(input["coordinates"])
         when "LineString"
-          _decode_line_string_coords(input["coordinates"])
+          decode_line_string_coords(input["coordinates"])
         when "Polygon"
-          _decode_polygon_coords(input["coordinates"])
+          decode_polygon_coords(input["coordinates"])
         when "MultiPoint"
-          _decode_multi_point_coords(input["coordinates"])
+          decode_multi_point_coords(input["coordinates"])
         when "MultiLineString"
-          _decode_multi_line_string_coords(input["coordinates"])
+          decode_multi_line_string_coords(input["coordinates"])
         when "MultiPolygon"
-          _decode_multi_polygon_coords(input["coordinates"])
+          decode_multi_polygon_coords(input["coordinates"])
         else
           nil
         end
       end
 
-      def _decode_geometry_collection(input)  # :nodoc:
+      def decode_geometry_collection(input)
         geometries_ = input["geometries"]
         geometries_ = [] unless geometries_.is_a?(Array)
         decoded_geometries_ = []
         geometries_.each do |g_|
-          g_ = _decode_geometry(g_)
+          g_ = decode_geometry(g_)
           decoded_geometries_ << g_ if g_
         end
         @geo_factory.collection(decoded_geometries_)
       end
 
-      def _decode_point_coords(point_coords)  # :nodoc:
+      def decode_point_coords(point_coords)
         return nil unless point_coords.is_a?(Array)
         @geo_factory.point(*(point_coords[0...@num_coordinates].map(&:to_f))) rescue nil
       end
 
-      def _decode_line_string_coords(line_coords) # :nodoc:
+      def decode_line_string_coords(line_coords)
         return nil unless line_coords.is_a?(Array)
         points = []
         line_coords.each do |point_coords|
-          point = _decode_point_coords(point_coords)
+          point = decode_point_coords(point_coords)
           points << point if point
         end
         @geo_factory.line_string(points)
       end
 
-      def _decode_polygon_coords(poly_coords) # :nodoc:
+      def decode_polygon_coords(poly_coords)
         return nil unless poly_coords.is_a?(Array)
         rings = []
         poly_coords.each do |ring_coords|
           return nil unless ring_coords.is_a?(Array)
           points = []
           ring_coords.each do |point_coords|
-            point = _decode_point_coords(point_coords)
+            point = decode_point_coords(point_coords)
             points << point if point
           end
           ring = @geo_factory.linear_ring(points)
@@ -227,31 +227,31 @@ module RGeo
         end
       end
 
-      def _decode_multi_point_coords(multi_point_coords) # :nodoc:
+      def decode_multi_point_coords(multi_point_coords)
         return nil unless multi_point_coords.is_a?(Array)
         points = []
         multi_point_coords.each do |point_coords|
-          point = _decode_point_coords(point_coords)
+          point = decode_point_coords(point_coords)
           points << point if point
         end
         @geo_factory.multi_point(points)
       end
 
-      def _decode_multi_line_string_coords(multi_line_coords) # :nodoc:
+      def decode_multi_line_string_coords(multi_line_coords)
         return nil unless multi_line_coords.is_a?(Array)
         lines = []
         multi_line_coords.each do |line_coords|
-          line = _decode_line_string_coords(line_coords)
+          line = decode_line_string_coords(line_coords)
           lines << line if line
         end
         @geo_factory.multi_line_string(lines)
       end
 
-      def _decode_multi_polygon_coords(multi_polygon_coords) # :nodoc:
+      def decode_multi_polygon_coords(multi_polygon_coords)
         return nil unless multi_polygon_coords.is_a?(Array)
         polygons = []
         multi_polygon_coords.each do |poly_coords|
-          poly = _decode_polygon_coords(poly_coords)
+          poly = decode_polygon_coords(poly_coords)
           polygons << poly if poly
         end
         @geo_factory.multi_polygon(polygons)
