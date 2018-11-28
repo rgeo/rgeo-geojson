@@ -1,9 +1,30 @@
 inherit_from: .rubocop_todo.yml
 
-Style/AlignParameters:
+AllCops:
+  TargetRubyVersion: 2.3
+
+Layout/AlignParameters:
   Enabled: false
 
-Style/MultilineOperationIndentation:
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
   Enabled: false
 
 Style/SignalException:
@@ -12,7 +33,10 @@ Style/SignalException:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
   Enabled: false
 
 Style/NumericPredicate:
