@@ -52,14 +52,7 @@ Style/FrozenStringLiteralComment:
   Exclude:
     - 'Gemfile'
     - 'Rakefile'
-    - 'lib/rgeo-geojson.rb'
-    - 'lib/rgeo/geo_json.rb'
-    - 'lib/rgeo/geo_json/coder.rb'
-    - 'lib/rgeo/geo_json/entities.rb'
-    - 'lib/rgeo/geo_json/interface.rb'
-    - 'lib/rgeo/geo_json/version.rb'
     - 'rgeo-geojson.gemspec'
-    - 'test/basic_test.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.

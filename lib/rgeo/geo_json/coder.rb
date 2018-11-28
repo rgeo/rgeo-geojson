@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RGeo
   module GeoJSON
     # This object encapsulates encoding and decoding settings (principally

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RGeo
   module GeoJSON
     # This is a GeoJSON wrapper entity that corresponds to the GeoJSON
