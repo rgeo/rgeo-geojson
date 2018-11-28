@@ -155,7 +155,7 @@ module RGeo
         geometry = input["geometry"]
         if geometry
           geometry = decode_geometry(geometry)
-          return nil unless geometry
+          return unless geometry
         end
         @entity_factory.feature(geometry, input["id"], input["properties"])
       end
@@ -193,12 +193,12 @@ module RGeo
       end
 
       def decode_point_coords(point_coords)
-        return nil unless point_coords.is_a?(Array)
+        return unless point_coords.is_a?(Array)
         @geo_factory.point(*(point_coords[0...@num_coordinates].map(&:to_f))) rescue nil
       end
 
       def decode_line_string_coords(line_coords)
-        return nil unless line_coords.is_a?(Array)
+        return unless line_coords.is_a?(Array)
         points = []
         line_coords.each do |point_coords|
           point = decode_point_coords(point_coords)
@@ -208,10 +208,10 @@ module RGeo
       end
 
       def decode_polygon_coords(poly_coords)
-        return nil unless poly_coords.is_a?(Array)
+        return unless poly_coords.is_a?(Array)
         rings = []
         poly_coords.each do |ring_coords|
-          return nil unless ring_coords.is_a?(Array)
+          return unless ring_coords.is_a?(Array)
           points = []
           ring_coords.each do |point_coords|
             point = decode_point_coords(point_coords)
@@ -228,7 +228,7 @@ module RGeo
       end
 
       def decode_multi_point_coords(multi_point_coords)
-        return nil unless multi_point_coords.is_a?(Array)
+        return unless multi_point_coords.is_a?(Array)
         points = []
         multi_point_coords.each do |point_coords|
           point = decode_point_coords(point_coords)
@@ -238,7 +238,7 @@ module RGeo
       end
 
       def decode_multi_line_string_coords(multi_line_coords)
-        return nil unless multi_line_coords.is_a?(Array)
+        return unless multi_line_coords.is_a?(Array)
         lines = []
         multi_line_coords.each do |line_coords|
           line = decode_line_string_coords(line_coords)
@@ -248,7 +248,7 @@ module RGeo
       end
 
       def decode_multi_polygon_coords(multi_polygon_coords)
-        return nil unless multi_polygon_coords.is_a?(Array)
+        return unless multi_polygon_coords.is_a?(Array)
         polygons = []
         multi_polygon_coords.each do |poly_coords|
           poly = decode_polygon_coords(poly_coords)
