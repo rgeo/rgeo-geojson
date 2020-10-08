@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
     "RGeo data types to and from GeoJSON."
 
   spec.authors = ["Daniel Azuma", "Tee Parham"]
-  spec.email = ["dazuma@gmail.com", "parhameter@gmail.com"]
+  spec.email = ["dazuma@gmail.com", "parhameter@gmail.com", "kfdoggett@gmail.com"]
   spec.homepage = "https://github.com/rgeo/rgeo-geojson"
-  spec.license = "BSD"
+  spec.license = "BSD-3-Clause"
 
   spec.files = Dir["lib/**/*.rb", "*.md", "LICENSE.txt"]
 
