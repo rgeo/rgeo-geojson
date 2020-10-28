@@ -66,7 +66,7 @@ module RGeo
           input = input.read rescue nil
         end
         if input.is_a?(String)
-          input = JSON.parse(input)
+          input = MultiJson.load(input)
         end
         return unless input.is_a?(Hash)
 
