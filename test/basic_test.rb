@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require "minitest/autorun"
-require "rgeo/geo_json"
+require_relative "test_helper"
 
 class BasicTest < Minitest::Test # :nodoc:
   def setup
-    @geo_factory = RGeo::Cartesian.simple_factory(srid: 4326)
+    @geo_factory = RGeo::GeoJSON.coder.instance_variable_get(:@geo_factory)
     @geo_factory_z = RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true)
     @geo_factory_m = RGeo::Cartesian.simple_factory(srid: 4326, has_m_coordinate: true)
     @geo_factory_zm = RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true, has_m_coordinate: true)
@@ -22,7 +21,7 @@ class BasicTest < Minitest::Test # :nodoc:
   end
 
   def test_decode_simple_point
-    json = %({"type":"Point","coordinates":[1,2]})
+    json = '{"type":"Point","coordinates":[1,2]}'
     point = RGeo::GeoJSON.decode(json)
     assert_equal "POINT (1.0 2.0)", point.as_text
   end
@@ -60,8 +59,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Point",
       "coordinates" => [10.0, 20.0, -1.0],
     }
-    assert_equal(json, RGeo::GeoJSON.encode(object))
-    assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory_m).eql?(object))
+    assert_raises(RGeo::GeoJSON::Coder::Error) { RGeo::GeoJSON.encode(object) }
+    assert_raises(RGeo::GeoJSON::Coder::Error) { RGeo::GeoJSON.decode(json, geo_factory: @geo_factory_m) }
   end
 
   def test_point_zm
@@ -70,8 +69,8 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "Point",
       "coordinates" => [10.0, 20.0, -1.0, -2.0],
     }
-    assert_equal(json, RGeo::GeoJSON.encode(object))
-    assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory_zm).eql?(object))
+    assert_raises(RGeo::GeoJSON::Coder::Error) { RGeo::GeoJSON.encode(object) }
+    assert_raises(RGeo::GeoJSON::Coder::Error) { RGeo::GeoJSON.decode(json, geo_factory: @geo_factory_zm) }
   end
 
   def test_line_string
@@ -92,6 +91,22 @@ class BasicTest < Minitest::Test # :nodoc:
     }
     assert_equal(json, RGeo::GeoJSON.encode(object))
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
+  end
+
+  def test_not_simple_polygon
+    coordinates = [[0, 0], [2, 2], [2, 0], [0, 2], [0, 0]]
+    object = @geo_factory.polygon(
+      @geo_factory.line_string(coordinates.map { |x, y| @geo_factory.point(x, y) })
+    )
+    json = {
+      "type" => "Polygon",
+      "coordinates" => [coordinates]
+    }
+    assert_equal(json, RGeo::GeoJSON.encode(object))
+    assert(
+      RGeo::GeoJSON.decode(json).eql?(object),
+      "It should decodes with the uses_lenient_assertions param"
+    )
   end
 
   def test_polygon_complex

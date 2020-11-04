@@ -1,6 +1,30 @@
 # frozen_string_literal: true
 
 module RGeo
+  # `RGeo::GeoJSON` is a part of `RGeo` designed to decode GeoJSON into
+  # `RGeo::Feature::Geometry`, or encode `RGeo::Feature::Geometry` objects as
+  #  GeoJSON.
+  #
+  # This implementation tries to stick to GeoJSON specifications, and may raise
+  # when trying to decode and invalid GeoJSON string. It may also raise if one
+  # tries to encode a feature that cannot be handled per GeoJSON spec.
+  #
+  # @example Basic usage
+  #   require 'rgeo/geo_json'
+  #
+  #   str1 = '{"type":"Point","coordinates":[1,2]}'
+  #   geom = RGeo::GeoJSON.decode(str1)
+  #   geom.as_text              # => "POINT (1.0 2.0)"
+  #
+  #   str2 = '{"type":"Feature","geometry":{"type":"Point","coordinates":[2.5,4.0]},"properties":{"color":"red"}}'
+  #   feature = RGeo::GeoJSON.decode(str2)
+  #   feature['color']          # => 'red'
+  #   feature.geometry.as_text  # => "POINT (2.5 4.0)"
+  #
+  #   hash = RGeo::GeoJSON.encode(feature)
+  #   hash.to_json == str2      # => true
+  #
+  # @see https://tools.ietf.org/html/rfc7946
   module GeoJSON
     class << self
       # High-level convenience routine for encoding an object as GeoJSON.
@@ -13,7 +37,6 @@ module RGeo
       # RGeo::GeoJSON::EntityFactory for more information. By default,
       # encode supports objects of type RGeo::GeoJSON::Feature and
       # RGeo::GeoJSON::FeatureCollection.
-
       def encode(object, opts = {})
         Coder.new(opts).encode(object)
       end
