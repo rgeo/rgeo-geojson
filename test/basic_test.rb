@@ -3,6 +3,8 @@
 require_relative "test_helper"
 
 class BasicTest < Minitest::Test # :nodoc:
+  include TestHelper
+
   def setup
     @geo_factory = RGeo::GeoJSON.coder.instance_variable_get(:@geo_factory)
     @geo_factory_z = RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true)
@@ -95,9 +97,7 @@ class BasicTest < Minitest::Test # :nodoc:
 
   def test_not_simple_polygon
     coordinates = [[0, 0], [2, 2], [2, 0], [0, 2], [0, 0]]
-    object = @geo_factory.polygon(
-      @geo_factory.line_string(coordinates.map { |x, y| @geo_factory.point(x, y) })
-    )
+    object = @geo_factory.polygon(line_string(coordinates))
     json = {
       "type" => "Polygon",
       "coordinates" => [coordinates]
@@ -110,10 +110,15 @@ class BasicTest < Minitest::Test # :nodoc:
   end
 
   def test_polygon_complex
-    object = @geo_factory.polygon(@geo_factory.linear_ring([@geo_factory.point(0, 0), @geo_factory.point(10, 0), @geo_factory.point(10, 10), @geo_factory.point(0, 10), @geo_factory.point(0, 0)]), [@geo_factory.linear_ring([@geo_factory.point(4, 4), @geo_factory.point(6, 5), @geo_factory.point(4, 6), @geo_factory.point(4, 4)])])
+    exterior = [[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]]
+    interior = [[4.0, 4.0], [4.0, 6.0], [6.0, 5.0], [4.0, 4.0]]
+    object = @geo_factory.polygon(
+      line_string(exterior),
+      [line_string(interior)]
+    )
     json = {
       "type" => "Polygon",
-      "coordinates" => [[[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]], [[4.0, 4.0], [6.0, 5.0], [4.0, 6.0], [4.0, 4.0]]],
+      "coordinates" => [[[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]], [[4.0, 4.0], [4.0, 6.0], [6.0, 5.0], [4.0, 4.0]]]
     }
     assert_equal(json, RGeo::GeoJSON.encode(object))
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
@@ -140,10 +145,23 @@ class BasicTest < Minitest::Test # :nodoc:
   end
 
   def test_multi_polygon
-    object = @geo_factory.multi_polygon([@geo_factory.polygon(@geo_factory.linear_ring([@geo_factory.point(0, 0), @geo_factory.point(10, 0), @geo_factory.point(10, 10), @geo_factory.point(0, 10), @geo_factory.point(0, 0)]), [@geo_factory.linear_ring([@geo_factory.point(4, 4), @geo_factory.point(6, 5), @geo_factory.point(4, 6), @geo_factory.point(4, 4)])]), @geo_factory.polygon(@geo_factory.linear_ring([@geo_factory.point(-10, -10), @geo_factory.point(-15, -10), @geo_factory.point(-10, -15), @geo_factory.point(-10, -10)]))])
+    exterior1 = [[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]]
+    interior1 = [[4.0, 4.0], [4.0, 6.0], [6.0, 5.0], [4.0, 4.0]]
+    exterior2 = [[-10.0, -10.0], [-15.0, -10.0], [-10.0, -15.0], [-10.0, -10.0]]
+    polygon1 = @geo_factory.polygon(
+      line_string(exterior1),
+      [line_string(interior1)]
+    )
+    polygon2 = @geo_factory.polygon(
+      line_string(exterior2)
+    )
+    object = @geo_factory.multi_polygon([polygon1, polygon2])
     json = {
       "type" => "MultiPolygon",
-      "coordinates" => [[[[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]], [[4.0, 4.0], [6.0, 5.0], [4.0, 6.0], [4.0, 4.0]]], [[[-10.0, -10.0], [-15.0, -10.0], [-10.0, -15.0], [-10.0, -10.0]]]]
+      "coordinates" => [
+        [exterior1, interior1],
+        [exterior2]
+      ]
     }
     assert_equal(json, RGeo::GeoJSON.encode(object))
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
@@ -272,5 +290,40 @@ class BasicTest < Minitest::Test # :nodoc:
     feature = RGeo::GeoJSON::Feature.new(nil, nil, a: "b")
     assert_equal "b", feature.properties["a"]
     assert_equal "b", feature["a"]
+  end
+
+  def test_right_hand_rule
+    ccw_exterior = [[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0], [0.0, 0.0]]
+    cw_interior = [[4.0, 4.0], [4.0, 6.0], [6.0, 5.0], [4.0, 4.0]]
+
+    json = { "type" => "Polygon", "coordinates" => [
+      ccw_exterior,
+      cw_interior
+    ] }
+
+    bad_interior = @geo_factory.polygon(
+      line_string(ccw_exterior),
+      [line_string(cw_interior.reverse)]
+    )
+    bad_exterior = @geo_factory.polygon(
+      line_string(ccw_exterior.reverse),
+      [line_string(cw_interior)]
+    )
+    bad_both = @geo_factory.polygon(
+      line_string(ccw_exterior.reverse),
+      [line_string(cw_interior.reverse)]
+    )
+    [bad_exterior, bad_interior, bad_both].each do |polygon|
+      assert_equal(json, RGeo::GeoJSON.encode(polygon))
+    end
+
+    multi_polygon = @geo_factory.multi_polygon(
+      [bad_both, bad_exterior, bad_interior]
+    )
+    assert_equal({ "type" => "MultiPolygon", "coordinates" => [
+      [ccw_exterior, cw_interior],
+      [ccw_exterior, cw_interior],
+      [ccw_exterior, cw_interior]
+    ] }, RGeo::GeoJSON.encode(multi_polygon))
   end
 end

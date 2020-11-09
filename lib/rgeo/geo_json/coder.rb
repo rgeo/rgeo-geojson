@@ -146,13 +146,24 @@ module RGeo
         case object
         when RGeo::Feature::Point,
              RGeo::Feature::LineString,
-             RGeo::Feature::Polygon,
              RGeo::Feature::MultiPoint,
-             RGeo::Feature::MultiLineString,
-             RGeo::Feature::MultiPolygon
+             RGeo::Feature::MultiLineString
           {
             "type" => object.geometry_type.type_name,
             "coordinates" => object.coordinates
+          }
+        when RGeo::Feature::Polygon
+          {
+            "type" => "Polygon",
+            "coordinates" => right_hand_ruled_coordinates(object)
+          }
+        when RGeo::Feature::MultiPolygon
+          coordinates = Array.new(object.num_geometries) do |i|
+            right_hand_ruled_coordinates(object.geometry_n(i))
+          end
+          {
+            "type" => "MultiPolygon",
+            "coordinates" => coordinates
           }
         when RGeo::Feature::GeometryCollection
           {
@@ -162,6 +173,28 @@ module RGeo
         else
           nil
         end
+      end
+
+      def right_hand_ruled_coordinates(polygon)
+        # Exterior should be ccw.
+        exterior = if clockwise?(polygon.exterior_ring)
+                     polygon.exterior_ring.coordinates.reverse
+                   else
+                     polygon.exterior_ring.coordinates
+                   end
+
+        interiors = polygon.interior_rings.map do |ring|
+          # Interiors should be cw.
+          next ring.coordinates if clockwise?(ring)
+
+          ring.coordinates.reverse
+        end
+
+        [exterior, *interiors]
+      end
+
+      def clockwise?(ring)
+        RGeo::Cartesian::Analysis.ring_direction(ring) == -1
       end
 
       def decode_feature(input)

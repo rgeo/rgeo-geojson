@@ -35,9 +35,9 @@ class CoderTest < Minitest::Test # :nodoc:
   end
 
   def test_encode_geometry_polygon
-    point1 = rand_point
-    point2 = rand_point
-    point3 = rand_point
+    point1 = @geo_factory.point(1.0, 2.0)
+    point2 = @geo_factory.point(3.4, 2.0)
+    point3 = @geo_factory.point(1.0, 3.0)
     exterior = @geo_factory.linear_ring([point1, point2, point3, point1])
     polygon = @geo_factory.polygon(exterior)
     assert_equal(
@@ -52,13 +52,13 @@ class CoderTest < Minitest::Test # :nodoc:
   end
 
   def test_encode_geometry_polygon_with_one_hole
-    point1 = @geo_factory.point(0.1, 0.2)
-    point2 = @geo_factory.point(0.1, 9.2)
-    point3 = @geo_factory.point(10.1, 9.2)
+    point1 = @geo_factory.point(6.1, 4.2)
+    point2 = @geo_factory.point(5.1, 6.2)
     point4 = @geo_factory.point(10.1, 0.2)
-    point5 = @geo_factory.point(4.1, 4.2)
-    point6 = @geo_factory.point(5.1, 6.2)
-    point7 = @geo_factory.point(6.1, 4.2)
+    point3 = @geo_factory.point(4.1, 4.2)
+    point5 = @geo_factory.point(10.1, 9.2)
+    point6 = @geo_factory.point(0.1, 0.2)
+    point7 = @geo_factory.point(0.1, 9.2)
     exterior = @geo_factory.linear_ring([point1, point2, point3, point4, point1])
     interior = @geo_factory.linear_ring([point5, point6, point7, point5])
     polygon = @geo_factory.polygon(exterior, [interior])
@@ -117,10 +117,10 @@ class CoderTest < Minitest::Test # :nodoc:
     point7 = @geo_factory.point(6, 4)
     point8 = @geo_factory.point(0, -10)
     point9 = @geo_factory.point(-10, 0)
-    exterior1 = @geo_factory.linear_ring([point1, point8, point9, point1])
-    exterior2 = @geo_factory.linear_ring([point1, point2, point3, point4, point1])
+    exterior1 = @geo_factory.linear_ring([point1, point9, point8, point1])
+    exterior2 = @geo_factory.linear_ring([point1, point4, point3, point2, point1])
     interior2 = @geo_factory.linear_ring([point5, point6, point7, point5])
-    exterior3 = @geo_factory.linear_ring([point1, point2, point3, point1])
+    exterior3 = @geo_factory.linear_ring([point1, point3, point2, point1])
     poly1 = @geo_factory.polygon(exterior1)
     poly2 = @geo_factory.polygon(exterior2, [interior2])
     poly3 = @geo_factory.polygon(exterior3)

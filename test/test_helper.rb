@@ -15,4 +15,8 @@ module TestHelper
   def rand_linestring(size = 2)
     @geo_factory.line_string(Array.new(size) { rand_point })
   end
+
+  def line_string(array)
+    @geo_factory.line_string(array.map { |x,y| @geo_factory.point(x, y) })
+  end
 end
