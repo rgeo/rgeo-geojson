@@ -6,8 +6,10 @@ module RGeo
     # the RGeo::Feature::Factory and the RGeo::GeoJSON::EntityFactory to
     # be used) so that you can encode and decode without specifying those
     # settings every time.
-
     class Coder
+      class Error < RGeo::GeoJSON::Error
+      end
+
       # Create a new coder settings object. The geo factory is passed as
       # a required argument.
       #
@@ -23,11 +25,37 @@ module RGeo
       #   RGeo::GeoJSON::Feature or RGeo::GeoJSON::FeatureCollection.
       #   See RGeo::GeoJSON::EntityFactory for more information.
       def initialize(opts = {})
-        @geo_factory = opts[:geo_factory] || RGeo::Cartesian.preferred_factory
-        @entity_factory = opts[:entity_factory] || EntityFactory.instance
+        @geo_factory = opts.fetch(
+          :geo_factory,
+          RGeo::Cartesian.preferred_factory(uses_lenient_assertions: true)
+        )
+        @entity_factory = opts.fetch(:entity_factory, EntityFactory.instance)
+        if @geo_factory.property(:has_m_coordinate)
+          # If a GeoJSON has more than 2 elements, the first one should be
+          # longitude and the second one latitude. M is not part of GeoJSON
+          # specifications and only kept here for backward compatibilities.
+          #
+          # Quote from https://tools.ietf.org/html/rfc7946#section-3.1.1:
+          #
+          # > A position is an array of numbers.  There MUST be two or more
+          # > elements.  The first two elements are longitude and latitude, or
+          # > easting and northing, precisely in that order and using decimal
+          # > numbers.  Altitude or elevation MAY be included as an optional third
+          # > element.
+          # >
+          # > Implementations SHOULD NOT extend positions beyond three elements
+          # > because the semantics of extra elements are unspecified and
+          # > ambiguous.  Historically, some implementations have used a fourth
+          # > element to carry a linear referencing measure (sometimes denoted as
+          # > "M") or a numerical timestamp, but in most situations a parser will
+          # > not be able to properly interpret these values.  The interpretation
+          # > and meaning of additional elements is beyond the scope of this
+          # > specification, and additional elements MAY be ignored by parsers.
+          raise Error, "GeoJSON format cannot handle m coordinate."
+        end
+
         @num_coordinates = 2
         @num_coordinates += 1 if @geo_factory.property(:has_z_coordinate)
-        @num_coordinates += 1 if @geo_factory.property(:has_m_coordinate)
       end
 
       # Encode the given object as GeoJSON. The object may be one of the
@@ -41,8 +69,9 @@ module RGeo
       # appropriate JSON library installed.
       #
       # Returns nil if nil is passed in as the object.
-
       def encode(object)
+        return nil if object.nil?
+
         if @entity_factory.is_feature_collection?(object)
           {
             "type" => "FeatureCollection",
@@ -50,8 +79,6 @@ module RGeo
           }
         elsif @entity_factory.is_feature?(object)
           encode_feature(object)
-        elsif object.nil?
-          nil
         else
           encode_geometry(object)
         end
@@ -111,36 +138,32 @@ module RGeo
       end
 
       def encode_geometry(object)
+        return nil if object.nil?
+        if object.factory.property(:has_m_coordinate)
+          raise Error, "GeoJSON format cannot handle m coordinate."
+        end
+
         case object
-        when RGeo::Feature::Point
+        when RGeo::Feature::Point,
+             RGeo::Feature::LineString,
+             RGeo::Feature::MultiPoint,
+             RGeo::Feature::MultiLineString
           {
-            "type" => "Point",
-            "coordinates" => object.coordinates
-          }
-        when RGeo::Feature::LineString
-          {
-            "type" => "LineString",
+            "type" => object.geometry_type.type_name,
             "coordinates" => object.coordinates
           }
         when RGeo::Feature::Polygon
           {
             "type" => "Polygon",
-            "coordinates" => object.coordinates
-          }
-        when RGeo::Feature::MultiPoint
-          {
-            "type" => "MultiPoint",
-            "coordinates" => object.coordinates
-          }
-        when RGeo::Feature::MultiLineString
-          {
-            "type" => "MultiLineString",
-            "coordinates" => object.coordinates
+            "coordinates" => right_hand_ruled_coordinates(object)
           }
         when RGeo::Feature::MultiPolygon
+          coordinates = Array.new(object.num_geometries) do |i|
+            right_hand_ruled_coordinates(object.geometry_n(i))
+          end
           {
             "type" => "MultiPolygon",
-            "coordinates" => object.coordinates
+            "coordinates" => coordinates
           }
         when RGeo::Feature::GeometryCollection
           {
@@ -150,6 +173,28 @@ module RGeo
         else
           nil
         end
+      end
+
+      def right_hand_ruled_coordinates(polygon)
+        # Exterior should be ccw.
+        exterior = if clockwise?(polygon.exterior_ring)
+                     polygon.exterior_ring.coordinates.reverse
+                   else
+                     polygon.exterior_ring.coordinates
+                   end
+
+        interiors = polygon.interior_rings.map do |ring|
+          # Interiors should be cw.
+          next ring.coordinates if clockwise?(ring)
+
+          ring.coordinates.reverse
+        end
+
+        [exterior, *interiors]
+      end
+
+      def clockwise?(ring)
+        RGeo::Cartesian::Analysis.ring_direction(ring) == -1
       end
 
       def decode_feature(input)
@@ -178,7 +223,7 @@ module RGeo
         when "MultiPolygon"
           decode_multi_polygon_coords(input["coordinates"])
         else
-          nil
+          raise Error, "'#{input['type']}' type is not part of GeoJSON spec."
         end
       end
 

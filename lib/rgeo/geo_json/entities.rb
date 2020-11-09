@@ -11,7 +11,6 @@ module RGeo
     # implementation need not subclass or even duck-type this class.
     # the entity factory mediates all interaction between the GeoJSON
     # engine and features.
-
     class Feature
       # Create a feature wrapping the given geometry, with the given ID
       # and properties.
@@ -95,7 +94,6 @@ module RGeo
     # FeatureCollection implementation need not subclass or even
     # duck-type this class. The entity factory mediates all interaction
     # between the GeoJSON engine and feature collections.
-
     class FeatureCollection
       include Enumerable
 
