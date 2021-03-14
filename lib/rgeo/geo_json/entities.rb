@@ -2,6 +2,20 @@
 
 module RGeo
   module GeoJSON
+    # Simplify usage of inner geometries for Feature and FeatureCollection
+    # objets. Including class must contain a `#geometry` method.
+    module DelegateToGeometry
+      def method_missing(symbol, *args)
+        return geometry.public_send(symbol, *args) if geometry
+
+        super
+      end
+
+      def respond_to_missing?(symbol, *)
+        geometry&.respond_to?(symbol) || super
+      end
+    end
+
     # This is a GeoJSON wrapper entity that corresponds to the GeoJSON
     # "Feature" type. It is an immutable type.
     #
@@ -11,11 +25,11 @@ module RGeo
     # implementation need not subclass or even duck-type this class.
     # the entity factory mediates all interaction between the GeoJSON
     # engine and features.
-
     class Feature
+      include DelegateToGeometry
+
       # Create a feature wrapping the given geometry, with the given ID
       # and properties.
-
       def initialize(geometry, id = nil, properties = {})
         @geometry = geometry
         @id = id
@@ -41,7 +55,6 @@ module RGeo
       # are all equal.
       # This method uses the eql? method to test geometry equality, which
       # may behave differently than the == operator.
-
       def eql?(other)
         other.is_a?(Feature) && @geometry.eql?(other.geometry) && @id.eql?(other.feature_id) && @properties.eql?(other.instance_variable_get(:@properties))
       end
@@ -50,37 +63,31 @@ module RGeo
       # are all equal.
       # This method uses the == operator to test geometry equality, which
       # may behave differently than the eql? method.
-
       def ==(other)
         other.is_a?(Feature) && @geometry == other.geometry && @id == other.feature_id && @properties == other.instance_variable_get(:@properties)
       end
 
       # Returns the geometry contained in this feature, which may be nil.
-
       attr_reader :geometry
 
       # Returns the ID for this feature, which may be nil.
-
       def feature_id
         @id
       end
 
       # Returns a copy of the properties for this feature.
-
       def properties
         @properties.dup
       end
 
       # Gets the value of the given named property.
       # Returns nil if the given property is not found.
-
       def property(key)
         @properties[key.to_s]
       end
       alias [] property
 
       # Gets an array of the known property keys in this feature.
-
       def keys
         @properties.keys
       end
@@ -95,20 +102,31 @@ module RGeo
     # FeatureCollection implementation need not subclass or even
     # duck-type this class. The entity factory mediates all interaction
     # between the GeoJSON engine and feature collections.
-
     class FeatureCollection
+      include DelegateToGeometry
       include Enumerable
 
       # Create a new FeatureCollection with the given features, which must
       # be provided as an Enumerable.
-
       def initialize(features = [])
         @features = []
         features.each { |f| @features << f if f.is_a?(Feature) }
+        @features.freeze
       end
 
       def inspect
         "#<#{self.class}:0x#{object_id.to_s(16)}>"
+      end
+
+      # Similar to {RGeo::GeoJSON#geometry}, returns the inner geometries as
+      # a geometry collection. It can be nil if there are no features.
+      def geometry
+        return @geometry if defined?(@geometry)
+        return @geometry = nil if @features.empty?
+
+        @geometry = @features.first.factory.collection(
+          @features.map(&:geometry)
+        ).freeze
       end
 
       def to_s
@@ -123,7 +141,6 @@ module RGeo
       # features in the same order.
       # This methods uses the eql? method to test geometry equality, which
       # may behave differently than the == operator.
-
       def eql?(other)
         other.is_a?(FeatureCollection) && @features.eql?(other.instance_variable_get(:@features))
       end
@@ -132,25 +149,21 @@ module RGeo
       # features in the same order.
       # This methods uses the == operator to test geometry equality, which
       # may behave differently than the eql? method.
-
       def ==(other)
         other.is_a?(FeatureCollection) && @features == other.instance_variable_get(:@features)
       end
 
       # Iterates or returns an iterator for the features.
-
       def each(&block)
         @features.each(&block)
       end
 
       # Returns the number of features contained in this collection.
-
       def size
         @features.size
       end
 
       # Access a feature by index.
-
       def [](index)
         @features[index]
       end
@@ -164,60 +177,51 @@ module RGeo
       # Create and return a new feature, given geometry, ID, and
       # properties hash. Note that, per the GeoJSON spec, geometry and/or
       # properties may be nil.
-
       def feature(geometry, id = nil, properties = nil)
         Feature.new(geometry, id, properties || {})
       end
 
       # Create and return a new feature collection, given an enumerable
       # of feature objects.
-
       def feature_collection(features = [])
         FeatureCollection.new(features)
       end
 
       # Returns true if the given object is a feature created by this
       # entity factory.
-
       def is_feature?(object)
         object.is_a?(Feature)
       end
 
       # Returns true if the given object is a feature collection created
       # by this entity factory.
-
       def is_feature_collection?(object)
         object.is_a?(FeatureCollection)
       end
 
       # Run Enumerable#map on the features contained in the given feature
       # collection.
-
       def map_feature_collection(object, &block)
         object.map(&block)
       end
 
       # Returns the geometry associated with the given feature.
-
       def get_feature_geometry(object)
         object.geometry
       end
 
       # Returns the ID of the given feature, or nil for no ID.
-
       def get_feature_id(object)
         object.feature_id
       end
 
       # Returns the properties of the given feature as a hash. Editing
       # this hash does not change the state of the feature.
-
       def get_feature_properties(object)
         object.properties
       end
 
       # Return the singleton instance of EntityFactory.
-
       def self.instance
         @instance ||= new
       end

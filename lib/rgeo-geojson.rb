@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require "rgeo/geo_json"
+require_relative "rgeo/geo_json"
