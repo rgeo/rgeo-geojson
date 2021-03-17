@@ -103,7 +103,6 @@ module RGeo
     # duck-type this class. The entity factory mediates all interaction
     # between the GeoJSON engine and feature collections.
     class FeatureCollection
-      include DelegateToGeometry
       include Enumerable
 
       # Create a new FeatureCollection with the given features, which must
@@ -116,17 +115,6 @@ module RGeo
 
       def inspect
         "#<#{self.class}:0x#{object_id.to_s(16)}>"
-      end
-
-      # Similar to {RGeo::GeoJSON#geometry}, returns the inner geometries as
-      # a geometry collection. It can be nil if there are no features.
-      def geometry
-        return @geometry if defined?(@geometry)
-        return @geometry = nil if @features.empty?
-
-        @geometry = @features.first.factory.collection(
-          @features.map(&:geometry)
-        ).freeze
       end
 
       def to_s

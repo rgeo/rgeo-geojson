@@ -257,7 +257,6 @@ class BasicTest < Minitest::Test # :nodoc:
         },
       ]
     }
-    assert_equal(object.geometry, @geo_factory.collection(geometries))
     assert_equal(json, RGeo::GeoJSON.encode(object))
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
   end
@@ -268,7 +267,6 @@ class BasicTest < Minitest::Test # :nodoc:
       "type" => "FeatureCollection",
       "features" => []
     }
-    assert_nil(object.geometry)
     assert_equal(json, RGeo::GeoJSON.encode(object))
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
   end
