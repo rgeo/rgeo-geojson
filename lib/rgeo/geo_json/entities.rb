@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
+require_relative "collection_methods"
+
 module RGeo
   module GeoJSON
     # Simplify usage of inner geometries for Feature and FeatureCollection
     # objets. Including class must contain a `#geometry` method.
     module DelegateToGeometry
-      def method_missing(symbol, *args)
+      private def method_missing(symbol, *args)
         return geometry.public_send(symbol, *args) if geometry
 
         super
       end
 
-      def respond_to_missing?(symbol, *)
+      private def respond_to_missing?(symbol, *)
         geometry&.respond_to?(symbol) || super
       end
     end
@@ -104,6 +106,7 @@ module RGeo
     # between the GeoJSON engine and feature collections.
     class FeatureCollection
       include Enumerable
+      include CollectionMethods
 
       # Create a new FeatureCollection with the given features, which must
       # be provided as an Enumerable.
