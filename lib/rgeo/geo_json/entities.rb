@@ -3,6 +3,22 @@
 require_relative "collection_methods"
 
 module RGeo
+  module CastOverlay
+    def self.included(base)
+      # The original {RGeo::Feature.cast} would copy a GeoJSON::Feature, which
+      # fails most operations. When casting, we MUST get a geometry.
+      original_cast = base.method(:cast)
+      base.define_singleton_method(:cast) do |obj, *params|
+        if obj.class == GeoJSON::Feature
+          original_cast.call(obj.geometry, *params)
+        else
+          original_cast.call(obj, *params)
+        end
+      end
+    end
+  end
+  Feature.include(CastOverlay)
+
   module GeoJSON
     # Simplify usage of inner geometries for Feature and FeatureCollection
     # objets. Including class must contain a `#geometry` method.

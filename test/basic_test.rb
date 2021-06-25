@@ -276,4 +276,11 @@ class BasicTest < Minitest::Test # :nodoc:
     assert_equal "b", feature.properties["a"]
     assert_equal "b", feature["a"]
   end
+
+  def test_feature_cast
+    factory = RGeo::Cartesian.factory(srid: 4326)
+    poly = factory.polygon(factory.linear_ring([factory.point(0, 0), factory.point(10, 0), factory.point(10, 10), factory.point(0, 10), factory.point(0, 0)]))
+    point_feature = RGeo::GeoJSON::Feature.new(factory.point(1, 1))
+    assert poly.contains?(point_feature)
+  end
 end
