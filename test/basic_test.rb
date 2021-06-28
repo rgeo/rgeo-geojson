@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require "minitest/autorun"
-require "rgeo/geo_json"
-
+require_relative "../lib/rgeo-geojson"
 class BasicTest < Minitest::Test # :nodoc:
   def setup
     @geo_factory = RGeo::Cartesian.simple_factory(srid: 4326)
@@ -179,10 +178,10 @@ class BasicTest < Minitest::Test # :nodoc:
   def test_feature_nulls
     feature = @entity_factory.feature(nil, nil, nil)
     json = RGeo::GeoJSON.encode(feature)
-    obj_ = RGeo::GeoJSON.decode(json, geo_factory: @geo_factory)
-    refute_nil(obj_)
-    assert_nil(obj_.geometry)
-    assert_equal({}, obj_.properties)
+    obj = RGeo::GeoJSON.decode(json, geo_factory: @geo_factory)
+    refute_nil(obj)
+    assert_nil(obj.geometry)
+    assert_equal({}, obj.properties)
   end
 
   def test_feature_complex
@@ -218,7 +217,16 @@ class BasicTest < Minitest::Test # :nodoc:
   end
 
   def test_feature_collection
-    object = @entity_factory.feature_collection([@entity_factory.feature(@geo_factory.point(10, 20)), @entity_factory.feature(@geo_factory.point(11, 22)), @entity_factory.feature(@geo_factory.point(10, 20), 8)])
+    geometries = [
+      @geo_factory.point(10, 20),
+      @geo_factory.point(11, 22),
+      @geo_factory.point(10, 20)
+    ]
+    object = @entity_factory.feature_collection([
+      @entity_factory.feature(geometries[0]),
+      @entity_factory.feature(geometries[1]),
+      @entity_factory.feature(geometries[2], 8)
+    ])
     json = {
       "type" => "FeatureCollection",
       "features" => [
@@ -253,9 +261,26 @@ class BasicTest < Minitest::Test # :nodoc:
     assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
   end
 
+  def test_feature_collection_empty
+    object = @entity_factory.feature_collection([])
+    json = {
+      "type" => "FeatureCollection",
+      "features" => []
+    }
+    assert_equal(json, RGeo::GeoJSON.encode(object))
+    assert(RGeo::GeoJSON.decode(json, geo_factory: @geo_factory).eql?(object))
+  end
+
   def test_feature_property
     feature = RGeo::GeoJSON::Feature.new(nil, nil, a: "b")
     assert_equal "b", feature.properties["a"]
     assert_equal "b", feature["a"]
+  end
+
+  def test_feature_cast
+    factory = RGeo::Cartesian.factory(srid: 4326)
+    poly = factory.polygon(factory.linear_ring([factory.point(0, 0), factory.point(10, 0), factory.point(10, 10), factory.point(0, 10), factory.point(0, 0)]))
+    point_feature = RGeo::GeoJSON::Feature.new(factory.point(1, 1))
+    assert poly.contains?(point_feature)
   end
 end

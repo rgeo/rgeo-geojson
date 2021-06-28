@@ -6,7 +6,6 @@ module RGeo
     # the RGeo::Feature::Factory and the RGeo::GeoJSON::EntityFactory to
     # be used) so that you can encode and decode without specifying those
     # settings every time.
-
     class Coder
       # Create a new coder settings object. The geo factory is passed as
       # a required argument.
@@ -41,7 +40,6 @@ module RGeo
       # appropriate JSON library installed.
       #
       # Returns nil if nil is passed in as the object.
-
       def encode(object)
         if @entity_factory.is_feature_collection?(object)
           {
@@ -60,7 +58,6 @@ module RGeo
       # Decode an object from GeoJSON. The input may be a JSON hash, a
       # String, or an IO object from which to read the JSON string.
       # If an error occurs, nil is returned.
-
       def decode(input)
         if input.is_a?(IO)
           input = input.read rescue nil

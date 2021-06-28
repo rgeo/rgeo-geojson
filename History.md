@@ -1,3 +1,8 @@
+### Ongoing
+
+* Delegation to inner geometry for a feature (#53)
+* MultiJson rather than JSON (#46)
+
 ### 2.1.1 / 2018-11-27
 
 * Freeze strings

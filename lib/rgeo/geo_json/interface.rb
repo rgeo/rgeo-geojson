@@ -13,9 +13,8 @@ module RGeo
       # RGeo::GeoJSON::EntityFactory for more information. By default,
       # encode supports objects of type RGeo::GeoJSON::Feature and
       # RGeo::GeoJSON::FeatureCollection.
-
       def encode(object, opts = {})
-        Coder.new(opts).encode(object)
+        coder(opts).encode(object)
       end
 
       # High-level convenience routine for decoding an object from GeoJSON.
@@ -33,8 +32,8 @@ module RGeo
       #   RGeo::GeoJSON::EntityFactory, which generates objects of type
       #   RGeo::GeoJSON::Feature or RGeo::GeoJSON::FeatureCollection.
       #   See RGeo::GeoJSON::EntityFactory for more information.
-      def decode(input_, opts = {})
-        Coder.new(opts).decode(input_)
+      def decode(input, opts = {})
+        coder(opts).decode(input)
       end
 
       # Creates and returns a coder object of type RGeo::GeoJSON::Coder
