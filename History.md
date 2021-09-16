@@ -2,6 +2,7 @@
 
 * Delegation to inner geometry for a feature (#53)
 * MultiJson rather than JSON (#46)
+* Conversion methods for better integration with core (#56)
 
 ### 2.1.1 / 2018-11-27
 

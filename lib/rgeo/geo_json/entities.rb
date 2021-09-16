@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "collection_methods"
+require_relative "conversion_methods"
 
 module RGeo
   module CastOverlay
@@ -45,6 +46,7 @@ module RGeo
     # engine and features.
     class Feature
       include DelegateToGeometry
+      include ConversionMethods
 
       # Create a feature wrapping the given geometry, with the given ID
       # and properties.
@@ -123,6 +125,7 @@ module RGeo
     class FeatureCollection
       include Enumerable
       include CollectionMethods
+      include ConversionMethods
 
       # Create a new FeatureCollection with the given features, which must
       # be provided as an Enumerable.

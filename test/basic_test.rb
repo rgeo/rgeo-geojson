@@ -283,4 +283,49 @@ class BasicTest < Minitest::Test # :nodoc:
     point_feature = RGeo::GeoJSON::Feature.new(factory.point(1, 1))
     assert poly.contains?(point_feature)
   end
+
+  def test_feature_to_geojson
+    json = {
+      "type" => "Feature",
+      "geometry" => {
+        "type" => "Polygon",
+        "coordinates" => [[[10.0, 20.0], [12.0, 22.0], [-3.0, 24.0], [10.0, 20.0]]]
+      },
+      "properties" => {}
+    }
+    feature = RGeo::GeoJSON.decode(json)
+    assert_equal(
+      json,
+      feature.as_geojson
+    )
+    assert_equal(
+      '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[10.0,20.0],[12.0,22.0],[-3.0,24.0],[10.0,20.0]]]},"properties":{}}',
+      feature.to_geojson
+    )
+  end
+
+  def test_feature_collection_to_geojson
+    json = {
+      "type" => "FeatureCollection",
+      "features" => [
+        {
+          "type" => "Feature",
+          "geometry" => {
+            "type" => "Point",
+            "coordinates" => [10.0, 20.0],
+          },
+          "properties" => {}
+        }
+      ]
+    }
+    feature_collection = RGeo::GeoJSON.decode(json)
+    assert_equal(
+      json,
+      feature_collection.as_geojson
+    )
+    assert_equal(
+      '{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[10.0,20.0]},"properties":{}}]}',
+      feature_collection.to_geojson
+    )
+  end
 end
