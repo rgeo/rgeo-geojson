@@ -29,7 +29,7 @@ module RGeo
       def to_geojson
         ::MultiJson.dump(as_geojson)
       end
-      alias as_json as_geojson
+      alias to_json to_geojson
     end
 
     module Factory::Instance
