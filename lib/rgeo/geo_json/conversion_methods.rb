@@ -17,6 +17,12 @@ module RGeo
     alias to_json to_geojson
   end
 
+  # These convenience methods are added directly into the module rather than
+  # including the module above into the Feature::Instance module which is in
+  # every geometry implementation. This is due to a behavior in ruby versions
+  # <3.0.2 where dynamically included modules will not be included automatically
+  # in the ancestor tree.
+  # See https://bugs.ruby-lang.org/issues/9573 for more information.
   module Feature
     module Instance
       # Convert a geometry to a GeoJSON Hash
