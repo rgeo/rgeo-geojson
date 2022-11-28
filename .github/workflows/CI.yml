@@ -1,0 +1,35 @@
+name: Tests
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        ruby:
+          - head
+          - "3.0"
+          - "2.7"
+          - "2.6"
+          - "jruby-9.3.7.0"
+        os:
+          - ubuntu
+          - macos
+    steps:
+      - name: Set Up Gems
+        uses: actions/checkout@v2
+      - name: Install Geos (Linux)
+        if: matrix.os == 'ubuntu'
+        run: |
+          sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable
+          sudo apt-get install -yqq libgeos-dev
+      - name: Install Geos (Mac)
+        if: matrix.os == 'macos'
+        run: HOMEBREW_NO_INSTALL_CLEANUP=1 brew install geos
+      - name: Set Up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Test
+        run: bundle exec rake

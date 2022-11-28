@@ -4,7 +4,8 @@ require "minitest/autorun"
 require_relative "../lib/rgeo-geojson"
 class BasicTest < Minitest::Test # :nodoc:
   def setup
-    @geo_factory = RGeo::Cartesian.simple_factory(srid: 4326)
+    ruby_wkt_opts = { convert_case: :upper }
+    @geo_factory = RGeo::Cartesian.simple_factory(srid: 4326, wkt_generator: ruby_wkt_opts)
     @geo_factory_z = RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true)
     @geo_factory_m = RGeo::Cartesian.simple_factory(srid: 4326, has_m_coordinate: true)
     @geo_factory_zm = RGeo::Cartesian.simple_factory(srid: 4326, has_z_coordinate: true, has_m_coordinate: true)
@@ -22,13 +23,13 @@ class BasicTest < Minitest::Test # :nodoc:
 
   def test_decode_simple_point
     json = %({"type":"Point","coordinates":[1,2]})
-    point = RGeo::GeoJSON.decode(json)
+    point = RGeo::GeoJSON.decode(json, geo_factory: @geo_factory)
     assert_equal "POINT (1.0 2.0)", point.as_text
   end
 
   def test_decode_point
     json = '{"type":"Feature","geometry":{"type":"Point","coordinates":[2.5,4.0]},"properties":{"color":"red"}}'
-    feature = RGeo::GeoJSON.decode(json)
+    feature = RGeo::GeoJSON.decode(json, geo_factory: @geo_factory)
     assert_equal "red", feature["color"]
     assert_equal "POINT (2.5 4.0)", feature.geometry.as_text
   end
@@ -223,10 +224,10 @@ class BasicTest < Minitest::Test # :nodoc:
       @geo_factory.point(10, 20)
     ]
     object = @entity_factory.feature_collection([
-      @entity_factory.feature(geometries[0]),
-      @entity_factory.feature(geometries[1]),
-      @entity_factory.feature(geometries[2], 8)
-    ])
+                                                  @entity_factory.feature(geometries[0]),
+                                                  @entity_factory.feature(geometries[1]),
+                                                  @entity_factory.feature(geometries[2], 8)
+                                                ])
     json = {
       "type" => "FeatureCollection",
       "features" => [
