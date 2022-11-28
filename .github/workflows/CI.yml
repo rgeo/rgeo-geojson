@@ -18,8 +18,14 @@ jobs:
     steps:
       - name: Set Up Gems
         uses: actions/checkout@v2
-      - name: Install GEOS
-        run: sudo apt-get install libgeos-dev
+      - name: Install Geos (Linux)
+        if: matrix.os == 'ubuntu'
+        run: |
+          sudo apt-add-repository ppa:ubuntugis/ubuntugis-unstable
+          sudo apt-get install -yqq libgeos-dev
+      - name: Install Geos (Mac)
+        if: matrix.os == 'macos'
+        run: HOMEBREW_NO_INSTALL_CLEANUP=1 brew install geos
       - name: Set Up Ruby
         uses: ruby/setup-ruby@v1
         with:
