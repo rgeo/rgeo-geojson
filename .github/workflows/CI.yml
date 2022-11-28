@@ -1,0 +1,29 @@
+name: Tests
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        ruby:
+          - head
+          - "3.0"
+          - "2.7"
+          - "2.6"
+          - "jruby"
+        os:
+          - ubuntu
+          - macos
+    steps:
+      - name: Set Up Gems
+        uses: actions/checkout@v2
+      - name: Install GEOS
+        run: sudo apt-get install libgeos-dev
+      - name: Set Up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Test
+        run: bundle exec rake
