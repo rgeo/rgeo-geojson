@@ -1,4 +1,4 @@
-### Ongoing
+### 2.2.0 / 2024-07-22
 
 * Delegation to inner geometry for a feature (#53)
 * MultiJson rather than JSON (#46)
