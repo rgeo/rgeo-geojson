@@ -1,7 +1,7 @@
 # rgeo-geojson
 
 [![Gem Version](https://badge.fury.io/rb/rgeo-geojson.svg)](http://badge.fury.io/rb/rgeo-geojson)
-[![Build Status](https://travis-ci.org/rgeo/rgeo-geojson.svg?branch=master)](https://travis-ci.org/rgeo/rgeo-geojson)
+[![CI](https://github.com/rgeo/rgeo-geojson/workflows/CI/badge.svg)](https://github.com/rgeo/rgeo-geojson/actions?query=workflow%3ACI+branch%3Amaster+event%3Apush)
 
 `rgeo-geojson` is an extension to [RGeo](https://github.com/rgeo/rgeo)
 that provides GeoJSON encoding and decoding.
