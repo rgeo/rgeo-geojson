@@ -8,10 +8,10 @@ jobs:
       matrix:
         ruby:
           - head
-          - "3.0"
-          - "2.7"
-          - "2.6"
-          - "jruby-9.3.7.0"
+          - "3.3"
+          - "3.2"
+          - "3.1"
+          - "jruby-9.4.8.0"
         os:
           - ubuntu
           - macos
